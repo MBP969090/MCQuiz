@@ -74,5 +74,15 @@ namespace ConsoleApplication6
 			}
 			return correct;
 		}
+
+		public string GetAnswer(int i)
+		{
+			return this.answers[i].GetText();
+		}
+
+		public string GetText()
+		{
+			return this.text;
+		}
 	}
 }

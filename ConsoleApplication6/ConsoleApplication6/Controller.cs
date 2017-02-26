@@ -141,5 +141,10 @@ namespace ConsoleApplication6
 		{
 			return this.questionaire.Evaluate();
 		}
+
+		public Questionaire GetQuestionaire()
+		{
+			return this.questionaire;
+		}
 	}
 }

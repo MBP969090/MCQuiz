@@ -11,14 +11,15 @@ namespace ConsoleApplication6
 	{
 		static void Main(string[] args)
 		{
+            Controller c = new Controller();
+			c.InitDemoQuestionaire();
             ConfigurationForm config_form = new ConfigurationForm();
-            QuestionForm ques_form = new QuestionForm(4);
+            QuestionForm ques_form = new QuestionForm(c.GetQuestionaire());
             EvaluationForm eval_form = new EvaluationForm();
             StartForm start_form = new StartForm(config_form, ques_form, eval_form);
 
             start_form.ShowDialog();
             
-            Controller c = new Controller();
 			if (c.InitDemoQuestionaire())
 			{
 				Question q = c.GetFirstQuestion();

@@ -12,15 +12,20 @@ namespace ConsoleApplication6
 {
     public partial class QuestionForm : Form
     {
-        private int question_count;
-        private int question_count_live = 0;
         private EvaluationForm eval_form;
         private StartForm start_form;
+		private Questionaire questionaire;
 
-        public QuestionForm(int question_count)
+        public QuestionForm(Questionaire questionaire)
         {
             InitializeComponent();
-            this.question_count = question_count;
+            this.questionaire = questionaire;
+			Question q = questionaire.GetFirstQuestion();
+			this.textBox1.Text = q.GetText();
+			radioButton1.Text = q.GetAnswer(0);
+			radioButton2.Text = q.GetAnswer(1);
+			radioButton3.Text = q.GetAnswer(2);
+			radioButton4.Text = q.GetAnswer(3);
         }
 
         private void QuestionForm_Load(object sender, EventArgs e)
@@ -40,29 +45,44 @@ namespace ConsoleApplication6
 
         private void forward_button_Click(object sender, EventArgs e)
         {
-            if (this.question_count_live >= this.question_count)
+			Question q;
+            //if (this.question_count_live >= this.question_count)
+			if((q = this.questionaire.GetNextQuestion()) == null)
             {
-                this.question_count_live = 0;
                 this.Hide();
                 eval_form.setStartForm(this.start_form);
                 eval_form.ShowDialog();
             }
             else
             {
-                this.question_count_live++;
+				this.textBox1.Text = q.GetText();
+				radioButton1.Text = q.GetAnswer(0);
+				radioButton2.Text = q.GetAnswer(1);
+				radioButton3.Text = q.GetAnswer(2);
+				radioButton4.Text = q.GetAnswer(3);
             }
         }
 
         private void back_button_Click(object sender, EventArgs e)
         {
-            if (this.question_count_live == 0)
+			Question q;
+            if ((q = this.questionaire.GetPreviousQuestion()) == null )
             {
 
             }
             else
             {
-                this.question_count_live--;
-            }
+				this.textBox1.Text = q.GetText();
+				radioButton1.Text = q.GetAnswer(0);
+				radioButton2.Text = q.GetAnswer(1);
+				radioButton3.Text = q.GetAnswer(2);
+				radioButton4.Text = q.GetAnswer(3);
+			}
         }
-    }
+
+		private void textBox1_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+	}
 }
