@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,10 +11,21 @@ namespace ConsoleApplication6
 	{
 		static void Main(string[] args)
 		{
-			Controller c = new Controller();
-			c.AnswerQuestion(1, new int[4] { 0, 0, 0, 1 });
-			Console.WriteLine(c.GetQuestion(1));
+			Dictionary<int, string> users = new Dictionary<int, string>();
 
+			// For School "Data Source=KrebsDB015;Initial Catalog=TODO;User id=Krebs015;Password=pKrebs015;
+
+			Controller c = new Controller();
+			c.InitQuestionaire(3);
+			Question q = c.GetFirstQuestion();
+			do
+			{
+				Console.WriteLine(q);
+				Console.Write("Antwort: ");
+				int choosen_answer = Convert.ToInt32(Console.ReadLine());
+				q.AnswerQuestion(choosen_answer);
+			} while ((q = c.GetNextQuestion()) != null);
+			Console.WriteLine(c.Evaluate()+" %");
 			Console.Read();
 		}
 	}

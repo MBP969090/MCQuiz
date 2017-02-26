@@ -7,16 +7,17 @@ namespace ConsoleApplication6
 	{
 		private string text;
 		private List<Answer> answers;
-		private int question_id;
-		public Question(string text, List<Answer> answers, int question_id)
+		private int id;
+		public Question(int id, string text, List<Answer> answers)
 		{
 			this.text = text;
 			this.answers = answers;
-			this.question_id = question_id;
+			this.id = id;
 		}
 
-		public Question(string text)
+		public Question(int id, string text)
 		{
+			this.id = id;
 			this.text = text;
 			this.answers = new List<Answer>();
 		}
@@ -35,42 +36,37 @@ namespace ConsoleApplication6
 		public override string ToString()
 		{
 			string output = "";
-			output = this.text;
+			output = this.id + ": " +this.text;
+			int answer_id = 1;
 			foreach(Answer answer in this.answers)
 			{
-				output += "\n\t"+answer.GetText() + "(Ausgewählt: "+answer.IsChoosen()+") " + answer.IsCorrect();
+				output += "\n\t#"+answer_id+++": "+answer.GetText() + "(Ausgewählt: "+answer.IsChoosen()+") " + answer.IsCorrect();
 			}
-			output += "\nAuswertung: " + Result() + " %";
+			output += "\nAuswertung: " + (IsRight() ? 1 : 0);
 			return output;
 		}
 
-		public void AnswerQuestion(int[] choosen_answers)
+		public void AnswerQuestion(int number)
 		{
-			for (int i = 0; i < choosen_answers.Length; i++)
-			{
-				if(choosen_answers[i] == 1) {
-					this.answers[i].SetChoosen();
-				} 
-			}
+			this.answers[number - 1].SetChoosen();
 		}
 
 		internal int GetId()
 		{
-			return this.question_id;
+			return this.id;
 		}
 
 		// returns success in percents
-		public double Result()
+		public bool IsRight()
 		{
-			int answer_count = this.answers.Count;
-			int correct_answers = 0;
+			bool correct = false;
 			foreach (Answer answer in answers)
 			{
-				if(answer.IsCorrect() == answer.IsChoosen()) {
-					correct_answers++;
+				if(answer.IsCorrect() && answer.IsChoosen()) {
+					correct = true;
 				}
 			}
-			return (double)(100 * correct_answers / answer_count);
+			return correct;
 		}
 	}
 }

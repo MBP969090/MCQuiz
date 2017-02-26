@@ -6,25 +6,24 @@ namespace ConsoleApplication6
 	public class Questionaire
 	{
 		private List<Question> questions = new List<Question>();
-		private int question_counter = 0;
+		private int id;
+		private int question_pointer;
 
-		public Questionaire(Dictionary<string, Dictionary<string, bool>> questions)
+		public Questionaire(int id)
 		{
-			foreach (var item in questions)
-			{
-				List<Answer> answer_list = new List<Answer>();
-				foreach (var answer in item.Value)
-				{
-					Answer answer_object = new Answer(answer.Key, answer.Value);
-					answer_list.Add(answer_object);
-				}
-				AddQuestion(item.Key, answer_list);
-			}
+			this.id = id;
+			this.question_pointer = 0;
 		}
 
-		public void AddQuestion(string text, List<Answer> answers)
+		public void AddQuestion(int id, string text, Dictionary<string, bool> answers)
 		{
-			Question question = new Question(text, answers, ++this.question_counter);
+			List<Answer> answer_list = new List<Answer>();
+			foreach (var item in answers)
+			{
+				Answer answer = new Answer(item.Key, item.Value);
+				answer_list.Add(answer);
+			}
+			Question question = new Question(id, text, answer_list);
 			this.questions.Add(question);
 		}
 
@@ -53,6 +52,46 @@ namespace ConsoleApplication6
 				output += question.ToString()+"\n";
 			}
 			return output;
+		}
+
+		public Question GetFirstQuestion()
+		{
+			return this.questions[0];
+		}
+
+		public Question GetNextQuestion()
+		{
+			if (question_pointer < QuestionCount() - 1) {
+				return this.questions[++question_pointer];
+			}
+			return null;
+		}
+
+		public Question GetPreviousQuestion()
+		{
+			if(question_pointer > 0)
+			{
+				return this.questions[--question_pointer];
+			}
+			return null;
+		}
+
+		private int QuestionCount()
+		{
+			return this.questions.Count;
+		}
+
+		public double Evaluate()
+		{
+			int correct_answers = 0;
+			foreach (Question question in this.questions)
+			{
+				if (question.IsRight())
+				{
+					correct_answers++;
+				}
+			}
+			return 100*(double)correct_answers / QuestionCount();
 		}
 	}
 }
