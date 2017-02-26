@@ -18,7 +18,8 @@ namespace ConsoleApplication6
 		public void InitQuestionaire(int id)
 		{
 			this.questionaire = new Questionaire(id);
-			using (SqlConnection connection = new SqlConnection("Data Source=DESKTOP-4DTNI3N;Initial Catalog=master;Integrated Security=true;"))
+			//using (SqlConnection connection = new SqlConnection("Data Source=DESKTOP-4DTNI3N;Initial Catalog=master;Integrated Security=true;"))
+			using (SqlConnection connection = new SqlConnection("Data Source=KrebsDB015;Initial Catalog=master;User id=Krebs015;Password=pKrebs015"))
 			{
 				string query = "SELECT FragebogenNr, P_Id, Frage, Antwort1, Antwort2, Antwort3, Antwort4, RichtigeAntwort FROM T_Fragebogen_unter_Maschine LEFT JOIN T_SBF_Binnen ON (F_Id_SBF_Binnen=P_id) WHERE FragebogenNr="+id;
 				SqlCommand command = new SqlCommand(query, connection);

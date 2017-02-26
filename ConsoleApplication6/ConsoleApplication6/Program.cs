@@ -13,7 +13,7 @@ namespace ConsoleApplication6
 		{
 			Dictionary<int, string> users = new Dictionary<int, string>();
 
-			// For School "Data Source=KrebsDB015;Initial Catalog=TODO;User id=Krebs015;Password=pKrebs015;
+			// For School "Data Source=KrebsDB015;Initial Catalog=[master];User id=Krebs015;Password=pKrebs015;
 
 			Controller c = new Controller();
 			c.InitQuestionaire(3);
