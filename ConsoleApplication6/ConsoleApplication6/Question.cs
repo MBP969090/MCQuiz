@@ -46,9 +46,15 @@ namespace ConsoleApplication6
 			return output;
 		}
 
-		public void AnswerQuestion(int number)
+		public bool AnswerQuestion(int number)
 		{
-			this.answers[number - 1].SetChoosen();
+			try {
+				this.answers[number - 1].SetChoosen();
+				return true;
+			}catch(ArgumentOutOfRangeException e)
+			{
+				return false;
+			}
 		}
 
 		internal int GetId()
