@@ -23,5 +23,10 @@ namespace ConsoleApplication6
         {
             controller.SaveButtonClicked();
         }
+
+        public TextBox GetSuccessHurdleTextbox()
+        {
+            return this.SuccessHurdleTextBox;
+        }
     }
 }

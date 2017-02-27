@@ -10,14 +10,16 @@ namespace ConsoleApplication6
 {
 	public class Controller
 	{
-		Questionaire questionaire;
-        ConfigurationForm config_form;
-        QuestionForm ques_form;
-        EvaluationForm eval_form;
-        StartForm start_form;
+		private Questionaire questionaire;
+        private ConfigurationForm config_form;
+        private QuestionForm ques_form;
+        private EvaluationForm eval_form;
+        private StartForm start_form;
+        private Configuration configuration;
 
 		public Controller()
 		{
+            this.configuration = new Configuration();
             this.config_form = new ConfigurationForm(this);
             this.eval_form = new EvaluationForm(this);
             this.start_form = new StartForm(this);
@@ -180,6 +182,7 @@ namespace ConsoleApplication6
         public void ConfigButtonClicked()
         {
             start_form.Hide();
+            config_form.GetSuccessHurdleTextbox().Text = ""+this.configuration.SuccessHurdle;
             config_form.ShowDialog();
         }
 
