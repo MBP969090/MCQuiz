@@ -3,11 +3,22 @@ using System.Collections.Generic;
 
 namespace ConsoleApplication6
 {
+	/// <summary>
+	/// This class handles a specific question object
+	/// which contains multiple answers
+	/// </summary>
 	public class Question
 	{
 		private string text;
 		private List<Answer> answers;
 		private int id;
+
+		/// <summary>
+		/// Constructor for Question
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="text"></param>
+		/// <param name="answers"></param>
 		public Question(int id, string text, List<Answer> answers)
 		{
 			this.text = text;
@@ -15,24 +26,10 @@ namespace ConsoleApplication6
 			this.id = id;
 		}
 
-		public Question(int id, string text)
-		{
-			this.id = id;
-			this.text = text;
-			this.answers = new List<Answer>();
-		}
-
-		public void AddAnswer(string text, bool correct)
-		{
-			Answer answer = new Answer(text, correct);
-			this.answers.Add(answer);
-		}
-
-		public void AddAnswer(Answer answer)
-		{
-			this.answers.Add(answer);
-		}
-
+		/// <summary>
+		/// ToString method for Question object
+		/// </summary>
+		/// <returns>output</returns>
 		public override string ToString()
 		{
 			string output = "";
@@ -46,6 +43,12 @@ namespace ConsoleApplication6
 			return output;
 		}
 
+		/// <summary>
+		/// Sets the number'th answer to choosen
+		/// Unsets all others
+		/// </summary>
+		/// <param name="number"></param>
+		/// <returns>success</returns>
 		public bool AnswerQuestion(int number)
 		{
 			try {
@@ -67,12 +70,20 @@ namespace ConsoleApplication6
 			}
 		}
 
+		/// <summary>
+		/// This id represents Id from Database
+		/// </summary>
+		/// <returns>id</returns>
 		internal int GetId()
 		{
 			return this.id;
 		}
 
-		// returns success in percents
+		/// <summary>
+		/// return true if the choosen answer was right
+		/// else false
+		/// </summary>
+		/// <returns></returns>
 		public bool IsRight()
 		{
 			bool correct = false;
@@ -85,16 +96,30 @@ namespace ConsoleApplication6
 			return correct;
 		}
 
+		/// <summary>
+		/// get i'th answer
+		/// </summary>
+		/// <param name="i"></param>
+		/// <returns></returns>
 		public Answer GetAnswer(int i)
 		{
 			return this.answers[i];
 		}
 
+		/// <summary>
+		/// return question text
+		/// </summary>
+		/// <returns>text</returns>
 		public string GetText()
 		{
 			return this.text;
 		}
 
+		/// <summary>
+		/// return choosen answer object if exists
+		/// else null
+		/// </summary>
+		/// <returns>answer</returns>
 		public Answer GetSelectedAnswer()
 		{
 			foreach (Answer answer in this.answers)
@@ -107,6 +132,11 @@ namespace ConsoleApplication6
 			return null;
 		}
 
+		/// <summary>
+		/// return correct answer object if exists
+		/// else null
+		/// </summary>
+		/// <returns></returns>
 		public Answer GetCorrectAnswer()
 		{
 			foreach (Answer answer in this.answers)

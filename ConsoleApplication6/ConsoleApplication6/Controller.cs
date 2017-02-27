@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace ConsoleApplication6
 {
+	/// <summary>
+	/// This class is the main controller for Questionaire
+	/// </summary>
 	public class Controller
 	{
 		private Questionaire questionaire;
@@ -17,6 +20,10 @@ namespace ConsoleApplication6
         private StartForm start_form;
         private Configuration configuration;
 
+		/// <summary>
+		/// Constructor for Controller object
+		/// Initialises GUI
+		/// </summary>
 		public Controller()
 		{
             this.configuration = new Configuration();
@@ -27,6 +34,11 @@ namespace ConsoleApplication6
             this.start_form.ShowDialog();
 		}
 
+		/// <summary>
+		/// Initialise questionaire with id out of database
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>success</returns>
 		public bool InitQuestionaire(int id)
 		{
 			bool success = false;
@@ -72,6 +84,10 @@ namespace ConsoleApplication6
 			return success;
 		}
 
+		/// <summary>
+		/// Create new questionaire with hard coded data
+		/// </summary>
+		/// <returns></returns>
 		public bool InitDemoQuestionaire()
 		{
 			this.questionaire = new Questionaire(1);
@@ -116,62 +132,61 @@ namespace ConsoleApplication6
 			{
 				this.questionaire.AddQuestion(i+1, questions[i], answers[i]);
 			}
-            Console.WriteLine("BLA");
 			return true;
 		}
 		
+		/// <summary>
+		/// Execute GetNextQuestion from questionaire
+		/// </summary>
+		/// <returns>question</returns>
 		public Question GetNextQuestion()
 		{
 			return this.questionaire.GetNextQuestion();
 		}
 
+		/// <summary>
+		/// Execute GetPreviousQuestion from questionaire
+		/// </summary>
+		/// <returns>question</returns>
         public Question GetPreviousQuestion()
         {
             return this.questionaire.GetPreviousQuestion();
         }
 
+		/// <summary>
+		/// Execute GetFirstQuestion from questionaire
+		/// </summary>
+		/// <returns>question</returns>
 		public Question GetFirstQuestion()
 		{
 			return this.questionaire.GetFirstQuestion();
 		}
 
+		/// <summary>
+		/// Execute GetCurrentQuestion from questionaire
+		/// </summary>
+		/// <returns>question</returns>
         public Question GetCurrentQuestion()
         {
             return this.questionaire.GetCurrentQuestion();
         }
 
-		public bool AnswerQuestion(int question_id, int number)
-		{
-			try {
-				this.questionaire.GetQuestion(question_id).AnswerQuestion(number);
-				return true;
-			}catch(NullReferenceException e)
-			{
-				return false;
-			}
-		}
-
-		public Question GetQuestion(int id)
-		{
-			return this.questionaire.GetQuestion(id);
-		}
-		public override string ToString()
-		{
-			return this.questionaire.ToString();
-		}
-
+		/// <summary>
+		/// Execute Evaluate funktion form questionaire
+		/// </summary>
+		/// <returns></returns>
 		public double Evaluate()
 		{
 			return this.questionaire.Evaluate();
 		}
 
-		public Questionaire GetQuestionaire()
-		{
-			return this.questionaire;
-		}
-     
-
         //Startform functions
+
+		/// <summary>
+		/// Action if StartButton in startform is clicked
+		/// hide start_form
+		/// init questionform
+		/// </summary>
         public void StartButtonClicked()
         {
             this.InitDemoQuestionaire();
@@ -180,6 +195,12 @@ namespace ConsoleApplication6
             ques_form.ShowDialog();
         }
 
+		/// <summary>
+		/// Action if ConfigButton in startform is clicked
+		/// hide start_form
+		/// set labels in configurationform
+		/// init configurationform
+		/// </summary>
         public void ConfigButtonClicked()
         {
             start_form.Hide();
@@ -189,6 +210,13 @@ namespace ConsoleApplication6
         }
 
         //Configurationform functions
+
+		/// <summary>
+		/// Action if SaveButton in configurationform is clicked
+		/// hide config_form
+		/// sets configuration object to entered data
+		/// sets label in start_form
+		/// </summary>
         public void SaveButtonClicked()
         {
             config_form.Hide();
@@ -203,6 +231,12 @@ namespace ConsoleApplication6
         }
 
         //Evaluationform functions
+
+		/// <summary>
+		/// Action if BackToMenuButton in evaluationform is clicked
+		/// hide evaluationform
+		/// show start_form
+		/// </summary>
         public void BackToMainMenuButtonClicked()
         {
             eval_form.Hide();
@@ -210,27 +244,43 @@ namespace ConsoleApplication6
         }
 
         //Questionform functions
+
+		/// <summary>
+		/// initialise textboxes and radiobuttons for first question
+		/// </summary>
         public void InitializeQuestionForm(TextBox textbox, RadioButton[] radios)
         {
             textbox.Text = GetFirstQuestion().GetText();
             for (int i = 0; i < radios.Length; i++)
             {
-                radios[i].Text = GetFirstQuestion().GetAnswer(i).ToString();
+                radios[i].Text = GetFirstQuestion().GetAnswer(i).GetText();
             }
         }
 
+		/// <summary>
+		/// initialise textboxes and radiobuttons for next question
+		/// set choice for current question
+		/// </summary>
         public void ForwardButtonClicked(TextBox textbox, RadioButton[] radios)
         {
             SetSelectedAnswer(radios);
             CreateNextPageQuestionForm(textbox, radios);
         }
 
+		/// <summary>
+		/// initialise textboxes and radiobuttons for next question
+		/// set choice for current question
+		/// </summary>
         public void BackButtonClicked(TextBox textbox, RadioButton[] radios)
         {
             SetSelectedAnswer(radios);
             CreatePreviousPageQuestionForm(textbox, radios);
         }
 
+		/// <summary>
+		/// set choosen answer of current question
+		/// </summary>
+		/// <param name="radios"></param>
         private void SetSelectedAnswer(RadioButton[] radios)
         {
             for (int i = 0; i < radios.Length; i++)
@@ -241,6 +291,12 @@ namespace ConsoleApplication6
             }
         }
 
+		/// <summary>
+		/// initialise questionform for next question if exists
+		/// else initialise evaluationform
+		/// </summary>
+		/// <param name="textbox"></param>
+		/// <param name="radios"></param>
         private void CreateNextPageQuestionForm(TextBox textbox, RadioButton[] radios)
         {
             Question q;
@@ -258,12 +314,17 @@ namespace ConsoleApplication6
                 SetRadios(radios, q);
                 for (int i = 0; i < radios.Length; i++)
                 {
-                    radios[i].Text = q.GetAnswer(i).ToString();
+                    radios[i].Text = q.GetAnswer(i).GetText();
                 }
                 textbox.Text = q.GetText();
             }
         }
 
+		/// <summary>
+		/// initialise questionform for previous question if exists
+		/// </summary>
+		/// <param name="textbox"></param>
+		/// <param name="radios"></param>
         private void CreatePreviousPageQuestionForm(TextBox textbox, RadioButton[] radios)
         {
             Question q;
@@ -272,12 +333,17 @@ namespace ConsoleApplication6
                 SetRadios(radios, q);
                 for (int i = 0; i < radios.Length; i++)
                 {
-                    radios[i].Text = q.GetAnswer(i).ToString();
+                    radios[i].Text = q.GetAnswer(i).GetText();
                 }
                 textbox.Text = q.GetText();
             }
         }
 
+		/// <summary>
+		/// set radiobuttons like the answers of given question
+		/// </summary>
+		/// <param name="radios"></param>
+		/// <param name="q"></param>
         private void SetRadios(RadioButton[] radios, Question q)
         {
             for (int i = 0; i < radios.Length; i++)
