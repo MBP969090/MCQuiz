@@ -13,12 +13,6 @@ namespace ConsoleApplication6
 		{
             Controller c = new Controller();
 			c.InitDemoQuestionaire();
-            ConfigurationForm config_form = new ConfigurationForm();
-            QuestionForm ques_form = new QuestionForm(c.GetQuestionaire());
-            EvaluationForm eval_form = new EvaluationForm();
-            StartForm start_form = new StartForm(config_form, ques_form, eval_form);
-
-            start_form.ShowDialog();
             
 			if (c.InitDemoQuestionaire())
 			{

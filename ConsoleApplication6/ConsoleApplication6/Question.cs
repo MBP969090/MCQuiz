@@ -49,7 +49,7 @@ namespace ConsoleApplication6
 		public bool AnswerQuestion(int number)
 		{
 			try {
-				this.answers[number - 1].SetChoosen();
+				this.answers[number].SetChoosen();
 				return true;
 			}catch(ArgumentOutOfRangeException e)
 			{
@@ -75,9 +75,9 @@ namespace ConsoleApplication6
 			return correct;
 		}
 
-		public string GetAnswer(int i)
+		public Answer GetAnswer(int i)
 		{
-			return this.answers[i].GetText();
+			return this.answers[i];
 		}
 
 		public string GetText()

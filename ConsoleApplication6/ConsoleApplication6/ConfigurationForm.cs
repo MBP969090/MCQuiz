@@ -12,21 +12,16 @@ namespace ConsoleApplication6
 {
     public partial class ConfigurationForm : Form
     {
-        private StartForm start_form;
-        public ConfigurationForm()
+        private Controller controller;
+        public ConfigurationForm(Controller controller)
         {
             InitializeComponent();
+            this.controller = controller;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            start_form.Show();
-        }
-
-        public void setStartForm(StartForm start_form)
-        {
-            this.start_form = start_form;
+            controller.SaveButtonClicked();
         }
     }
 }

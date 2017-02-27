@@ -12,20 +12,16 @@ namespace ConsoleApplication6
 {
     public partial class StartForm : Form
     {
-        private ConfigurationForm config_form;
-        private QuestionForm ques_form;
-        private EvaluationForm eval_form;
+        private Controller controller;
         public StartForm()
         {
             InitializeComponent();
         }
 
-        public StartForm(ConfigurationForm config_form, QuestionForm ques_form, EvaluationForm eval_form)
+        public StartForm(Controller controller)
         {
             InitializeComponent();
-            this.config_form = config_form;
-            this.ques_form = ques_form;
-            this.eval_form = eval_form;
+            this.controller = controller;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -65,17 +61,12 @@ namespace ConsoleApplication6
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            this.Hide();
-            config_form.setStartForm(this);
-            config_form.ShowDialog();
+            controller.ConfigButtonClicked();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            ques_form.setEvalForm(this.eval_form);
-            ques_form.setStartForm(this);
-            ques_form.ShowDialog();
+           controller.StartButtonClicked();
         }
     }
 }

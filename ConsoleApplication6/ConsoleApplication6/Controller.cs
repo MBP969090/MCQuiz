@@ -4,15 +4,24 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ConsoleApplication6
 {
-	class Controller
+	public class Controller
 	{
 		Questionaire questionaire;
+        ConfigurationForm config_form;
+        QuestionForm ques_form;
+        EvaluationForm eval_form;
+        StartForm start_form;
 
 		public Controller()
 		{
+            this.config_form = new ConfigurationForm(this);
+            this.eval_form = new EvaluationForm();
+            this.start_form = new StartForm(this);
+            this.start_form.ShowDialog();
 		}
 
 		public bool InitQuestionaire(int id)
@@ -104,6 +113,7 @@ namespace ConsoleApplication6
 			{
 				this.questionaire.AddQuestion(i+1, questions[i], answers[i]);
 			}
+            Console.WriteLine("BLA");
 			return true;
 		}
 		
@@ -112,10 +122,20 @@ namespace ConsoleApplication6
 			return this.questionaire.GetNextQuestion();
 		}
 
+        public Question GetPreviousQuestion()
+        {
+            return this.questionaire.GetPreviousQuestion();
+        }
+
 		public Question GetFirstQuestion()
 		{
 			return this.questionaire.GetFirstQuestion();
 		}
+
+        public Question GetCurrentQuestion()
+        {
+            return this.questionaire.GetCurrentQuestion();
+        }
 
 		public bool AnswerQuestion(int question_id, int number)
 		{
@@ -146,5 +166,106 @@ namespace ConsoleApplication6
 		{
 			return this.questionaire;
 		}
+     
+
+        //Startform functions
+        public void StartButtonClicked()
+        {
+            this.InitDemoQuestionaire();
+            this.ques_form = new QuestionForm(this);
+            start_form.Hide();
+            ques_form.ShowDialog();
+        }
+
+        public void ConfigButtonClicked()
+        {
+            start_form.Hide();
+            config_form.ShowDialog();
+        }
+
+        //Configurationform functions
+        public void SaveButtonClicked()
+        {
+            config_form.Hide();
+            start_form.Show();
+        }
+
+        //Questionform functions
+        public void InitializeQuestionForm(TextBox textbox, RadioButton[] radios)
+        {
+            textbox.Text = GetFirstQuestion().GetText();
+            for (int i = 0; i < radios.Length; i++)
+            {
+                radios[i].Text = GetFirstQuestion().GetAnswer(i).ToString();
+            }
+        }
+
+        public void ForwardButtonClicked(TextBox textbox, RadioButton[] radios)
+        {
+            SetSelectedAnswer(radios);
+            CreateNextPageQuestionForm(textbox, radios);
+        }
+
+        public void BackButtonClicked(TextBox textbox, RadioButton[] radios)
+        {
+            SetSelectedAnswer(radios);
+            CreatePreviousPageQuestionForm(textbox, radios);
+        }
+
+        private void SetSelectedAnswer(RadioButton[] radios)
+        {
+            for (int i = 0; i < radios.Length; i++)
+            {
+                if(radios[i].Checked){
+                    this.GetCurrentQuestion().AnswerQuestion(i);
+                }
+            }
+        }
+
+        private void CreateNextPageQuestionForm(TextBox textbox, RadioButton[] radios)
+        {
+            Question q;
+            if ((q = GetNextQuestion()) == null)
+            {
+                this.ques_form.Hide();
+                this.eval_form.setStartForm(this.start_form);
+                this.eval_form.ShowDialog();
+            }
+            else
+            {
+                SetRadios(radios, q);
+                for (int i = 0; i < radios.Length; i++)
+                {
+                    radios[i].Text = q.GetAnswer(i).ToString();
+                }
+                textbox.Text = q.GetText();
+            }
+        }
+
+        private void CreatePreviousPageQuestionForm(TextBox textbox, RadioButton[] radios)
+        {
+            Question q;
+            if ((q = GetPreviousQuestion()) != null)
+            {
+                SetRadios(radios, q);
+                for (int i = 0; i < radios.Length; i++)
+                {
+                    radios[i].Text = q.GetAnswer(i).ToString();
+                }
+                textbox.Text = q.GetText();
+            }
+        }
+
+        private void SetRadios(RadioButton[] radios, Question q)
+        {
+            for (int i = 0; i < radios.Length; i++)
+            {
+                if(q.GetAnswer(i).IsChoosen()){
+                    radios[i].Checked = true;
+                } else{
+                    radios[i].Checked = false;
+                }
+            }
+        }
 	}
 }

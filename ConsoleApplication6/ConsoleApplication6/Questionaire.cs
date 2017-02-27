@@ -93,5 +93,10 @@ namespace ConsoleApplication6
 			}
 			return 100*(double)correct_answers / QuestionCount();
 		}
-	}
+
+        public Question GetCurrentQuestion()
+        {
+            return this.questions[question_pointer];
+        }
+    }
 }
