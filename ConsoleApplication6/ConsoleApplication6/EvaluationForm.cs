@@ -29,12 +29,24 @@ namespace ConsoleApplication6
             controller.BackToMainMenuButtonClicked();
         }
 
-        public void setSuccessLabel(bool success){
+        public void SetSuccessLabel(bool success){
             if(success){
+				this.successLabel.BackColor = Color.Green;
                 this.successLabel.Text = "GZ du pisser hast bestanden!!!.";
             } else {
+				this.successLabel.BackColor = Color.Red;
                 this.successLabel.Text = "Leider nicht bestanden du LOOOOOSEEERRRR!!! BOON!!!";
             }
         }
+
+		public void SetResultLabel(string result)
+		{
+			this.resultLabel.Text = result;
+		}
+
+		public void SetWrongAnswerTextbox(string s)
+		{
+			this.wrongAnswerTextbox.Text = s;
+		}
     }
 }

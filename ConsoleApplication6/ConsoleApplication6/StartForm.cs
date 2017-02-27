@@ -49,16 +49,6 @@ namespace ConsoleApplication6
 
         }
 
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button2_Click_1(object sender, EventArgs e)
         {
             controller.ConfigButtonClicked();
@@ -69,9 +59,9 @@ namespace ConsoleApplication6
            controller.StartButtonClicked();
         }
 
-        public Label GetLabel3()
+        public Label GetNameLabel()
         {
-            return this.label3;
+            return this.nameLabel;
         }
     }
 }

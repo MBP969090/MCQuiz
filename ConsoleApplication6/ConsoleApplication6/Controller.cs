@@ -23,7 +23,7 @@ namespace ConsoleApplication6
             this.config_form = new ConfigurationForm(this);
             this.eval_form = new EvaluationForm(this);
             this.start_form = new StartForm(this);
-            this.start_form.GetLabel3().Text = this.configuration.NameOfProgram;
+            this.start_form.GetNameLabel().Text = this.configuration.NameOfProgram;
             this.start_form.ShowDialog();
 		}
 
@@ -192,6 +192,13 @@ namespace ConsoleApplication6
         public void SaveButtonClicked()
         {
             config_form.Hide();
+			string name = config_form.GetNameOfProgramTextbox().Text;
+			int successHurdle = Convert.ToInt32(config_form.GetSuccessHurdleTextbox().Text);
+
+			this.configuration.NameOfProgram = name;
+			this.configuration.SuccessHurdle = successHurdle;
+
+            this.start_form.GetNameLabel().Text = name;
             start_form.Show();
         }
 
@@ -240,7 +247,9 @@ namespace ConsoleApplication6
             if ((q = GetNextQuestion()) == null)
             {
                 this.ques_form.Hide();
-                this.eval_form.setSuccessLabel(true);
+				this.eval_form.SetSuccessLabel(configuration.SuccessHurdle <= this.Evaluate());
+				this.eval_form.SetResultLabel(this.questionaire.GetEvaluateString());
+				this.eval_form.SetWrongAnswerTextbox(this.questionaire.GetWrongAnswerString());
                 this.eval_form.ShowDialog();
 
             }

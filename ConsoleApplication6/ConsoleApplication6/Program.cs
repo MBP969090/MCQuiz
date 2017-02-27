@@ -12,7 +12,7 @@ namespace ConsoleApplication6
 		static void Main(string[] args)
 		{
             Controller c = new Controller();
-			c.InitDemoQuestionaire();
+			/*c.InitDemoQuestionaire();
             
 			if (c.InitDemoQuestionaire())
 			{
@@ -33,7 +33,7 @@ namespace ConsoleApplication6
 			else
 			{
 				Console.WriteLine("Initialisation failed");
-			}
+			}*/
 			//Console.Read();
             
         }

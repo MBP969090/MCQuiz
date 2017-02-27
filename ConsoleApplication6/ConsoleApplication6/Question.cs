@@ -84,5 +84,29 @@ namespace ConsoleApplication6
 		{
 			return this.text;
 		}
+
+		public Answer GetSelectedAnswer()
+		{
+			foreach (Answer answer in this.answers)
+			{
+				if (answer.IsChoosen())
+				{
+					return answer;
+				}
+			}
+			return null;
+		}
+
+		public Answer GetCorrectAnswer()
+		{
+			foreach (Answer answer in this.answers)
+			{
+				if (answer.IsCorrect())
+				{
+					return answer;
+				}
+			}
+			return null;
+		}
 	}
 }

@@ -83,6 +83,16 @@ namespace ConsoleApplication6
 
 		public double Evaluate()
 		{
+			return 100*(double)CountCorrectAnswers() / QuestionCount();
+		}
+
+		public string GetEvaluateString()
+		{
+			return CountCorrectAnswers()+" von "+QuestionCount()+" Fragen sind richtig!";
+		}
+
+		private int CountCorrectAnswers()
+		{
 			int correct_answers = 0;
 			foreach (Question question in this.questions)
 			{
@@ -91,7 +101,42 @@ namespace ConsoleApplication6
 					correct_answers++;
 				}
 			}
-			return 100*(double)correct_answers / QuestionCount();
+
+			return correct_answers;
+		}
+
+		private List<Question> GetWrongAnswers()
+		{
+			List<Question> questions = new List<Question>();
+			foreach (Question question in this.questions)
+			{
+				if (!question.IsRight())
+				{
+					questions.Add(question);
+				}
+			}
+			return questions;
+		}
+		public string GetWrongAnswerString()
+		{
+			string output = "";
+			List<Question> questions = GetWrongAnswers();
+			foreach (Question question in questions)
+			{
+				output += "#"+question.GetId() + ": "+question.GetText()+"\r\n";
+				if (question.GetSelectedAnswer() != null)
+				{
+					output += "Deine Antwort: \t" + question.GetSelectedAnswer().GetText() + "\r\n";
+				}
+
+				if (question.GetCorrectAnswer() != null)
+				{
+					output += "Richtig: \t\t" + question.GetCorrectAnswer().GetText() + "\r\n";
+				}
+
+				output += "\r\n";
+			}
+			return output;
 		}
 
         public Question GetCurrentQuestion()
