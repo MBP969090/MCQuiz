@@ -68,5 +68,10 @@ namespace ConsoleApplication6
         {
            controller.StartButtonClicked();
         }
+
+        public Label GetLabel3()
+        {
+            return this.label3;
+        }
     }
 }

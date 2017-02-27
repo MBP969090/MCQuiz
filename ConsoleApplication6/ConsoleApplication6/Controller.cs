@@ -23,6 +23,7 @@ namespace ConsoleApplication6
             this.config_form = new ConfigurationForm(this);
             this.eval_form = new EvaluationForm(this);
             this.start_form = new StartForm(this);
+            this.start_form.GetLabel3().Text = this.configuration.NameOfProgram;
             this.start_form.ShowDialog();
 		}
 
@@ -183,6 +184,7 @@ namespace ConsoleApplication6
         {
             start_form.Hide();
             config_form.GetSuccessHurdleTextbox().Text = ""+this.configuration.SuccessHurdle;
+            config_form.GetNameOfProgramTextbox().Text = this.configuration.NameOfProgram;
             config_form.ShowDialog();
         }
 

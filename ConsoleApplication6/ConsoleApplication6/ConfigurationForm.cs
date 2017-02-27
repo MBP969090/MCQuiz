@@ -28,5 +28,10 @@ namespace ConsoleApplication6
         {
             return this.SuccessHurdleTextBox;
         }
+
+        public TextBox GetNameOfProgramTextbox()
+        {
+            return this.NameOfProgramTextBox;
+        }
     }
 }
