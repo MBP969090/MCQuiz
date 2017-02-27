@@ -34,7 +34,7 @@ namespace ConsoleApplication6
 			{
 				Console.WriteLine("Initialisation failed");
 			}
-			Console.Read();
+			//Console.Read();
             
         }
 	}

@@ -12,10 +12,11 @@ namespace ConsoleApplication6
 {
     public partial class EvaluationForm : Form
     {
-        private StartForm start_form;
-        public EvaluationForm()
+        private Controller controller;
+        public EvaluationForm(Controller controller)
         {
             InitializeComponent();
+            this.controller = controller;
         }
 
         private void EvaluationForm_Load(object sender, EventArgs e)
@@ -25,13 +26,15 @@ namespace ConsoleApplication6
 
         private void back_main_button_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            start_form.Show();
+            controller.BackToMainMenuButtonClicked();
         }
 
-        public void setStartForm(StartForm start_form)
-        {
-            this.start_form = start_form;
+        public void setSuccessLabel(bool success){
+            if(success){
+                this.successLabel.Text = "GZ du pisser hast bestanden!!!.";
+            } else {
+                this.successLabel.Text = "Leider nicht bestanden du LOOOOOSEEERRRR!!! BOON!!!";
+            }
         }
     }
 }

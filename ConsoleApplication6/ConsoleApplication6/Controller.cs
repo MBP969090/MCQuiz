@@ -19,7 +19,7 @@ namespace ConsoleApplication6
 		public Controller()
 		{
             this.config_form = new ConfigurationForm(this);
-            this.eval_form = new EvaluationForm();
+            this.eval_form = new EvaluationForm(this);
             this.start_form = new StartForm(this);
             this.start_form.ShowDialog();
 		}
@@ -190,6 +190,13 @@ namespace ConsoleApplication6
             start_form.Show();
         }
 
+        //Evaluationform functions
+        public void BackToMainMenuButtonClicked()
+        {
+            eval_form.Hide();
+            start_form.Show();
+        }
+
         //Questionform functions
         public void InitializeQuestionForm(TextBox textbox, RadioButton[] radios)
         {
@@ -228,8 +235,9 @@ namespace ConsoleApplication6
             if ((q = GetNextQuestion()) == null)
             {
                 this.ques_form.Hide();
-                this.eval_form.setStartForm(this.start_form);
+                this.eval_form.setSuccessLabel(true);
                 this.eval_form.ShowDialog();
+
             }
             else
             {
