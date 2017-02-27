@@ -49,7 +49,17 @@ namespace ConsoleApplication6
 		public bool AnswerQuestion(int number)
 		{
 			try {
-				this.answers[number].SetChoosen();
+				for (int i = 0; i < this.answers.Count; i++)
+				{
+					if (i == number)
+					{
+						this.answers[i].SetChoosen();
+					}
+					else
+					{
+						this.answers[i].SetUnchoosen();
+					}
+				}
 				return true;
 			}catch(ArgumentOutOfRangeException e)
 			{

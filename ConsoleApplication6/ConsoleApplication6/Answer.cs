@@ -25,9 +25,14 @@ namespace ConsoleApplication6
 			return this.choosen;
 		}
 
-		internal void SetChoosen()
+		public void SetChoosen()
 		{
 			this.choosen = true;
+		}
+
+		public void SetUnchoosen()
+		{
+			this.choosen = false;
 		}
 
 		public bool IsCorrect()
