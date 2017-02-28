@@ -33,6 +33,8 @@
             this.SuccessHurdleTextBox = new System.Windows.Forms.TextBox();
             this.NameOfProgramTextLabel = new System.Windows.Forms.Label();
             this.SuccessHurdleLabel = new System.Windows.Forms.Label();
+            this.btn_reset_history = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // save_back
@@ -77,11 +79,32 @@
             this.SuccessHurdleLabel.TabIndex = 4;
             this.SuccessHurdleLabel.Text = "Prüfungsbogen bestanden mit ... Prozent";
             // 
+            // btn_reset_history
+            // 
+            this.btn_reset_history.Location = new System.Drawing.Point(312, 123);
+            this.btn_reset_history.Name = "btn_reset_history";
+            this.btn_reset_history.Size = new System.Drawing.Size(75, 23);
+            this.btn_reset_history.TabIndex = 5;
+            this.btn_reset_history.Text = "löschen";
+            this.btn_reset_history.UseVisualStyleBackColor = true;
+            this.btn_reset_history.Click += new System.EventHandler(this.btn_reset_history_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(47, 128);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(82, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Historie löschen";
+            // 
             // ConfigurationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(514, 329);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btn_reset_history);
             this.Controls.Add(this.SuccessHurdleLabel);
             this.Controls.Add(this.NameOfProgramTextLabel);
             this.Controls.Add(this.SuccessHurdleTextBox);
@@ -101,5 +124,7 @@
         private System.Windows.Forms.TextBox SuccessHurdleTextBox;
         private System.Windows.Forms.Label NameOfProgramTextLabel;
         private System.Windows.Forms.Label SuccessHurdleLabel;
+        private System.Windows.Forms.Button btn_reset_history;
+        private System.Windows.Forms.Label label1;
     }
 }

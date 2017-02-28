@@ -222,5 +222,10 @@ namespace ConsoleApplication6
 			return output;
 		}
 
+        public int GetID()
+        {
+            return this.id;
+        }
+
     }
 }

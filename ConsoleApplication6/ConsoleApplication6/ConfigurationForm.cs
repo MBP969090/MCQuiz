@@ -33,5 +33,10 @@ namespace ConsoleApplication6
         {
             return this.NameOfProgramTextBox;
         }
+
+        private void btn_reset_history_Click(object sender, EventArgs e)
+        {
+            controller.ResetHistoryButtonClicked();
+        }
     }
 }

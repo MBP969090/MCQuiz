@@ -26,6 +26,7 @@ namespace ConsoleApplication6
 		/// </summary>
 		public Controller()
 		{
+            this.CreateHistoryTable();
             this.configuration = new Configuration();
             this.config_form = new ConfigurationForm(this);
             this.eval_form = new EvaluationForm(this);
@@ -230,6 +231,11 @@ namespace ConsoleApplication6
             start_form.Show();
         }
 
+        public void ResetHistoryButtonClicked()
+        {
+            this.DeleteHistory();
+        }
+
         //Evaluationform functions
 
 		/// <summary>
@@ -302,6 +308,7 @@ namespace ConsoleApplication6
             Question q;
             if ((q = GetNextQuestion()) == null)
             {
+                this.SaveResultInHistory();
                 this.ques_form.Hide();
 				this.eval_form.SetSuccessLabel(configuration.SuccessHurdle <= this.Evaluate());
 				this.eval_form.SetResultLabel(this.questionaire.GetEvaluateString());
@@ -353,6 +360,71 @@ namespace ConsoleApplication6
                 } else{
                     radios[i].Checked = false;
                 }
+            }
+        }
+
+        private void CreateHistoryTable()
+        {
+            //using (SqlConnection connection = new SqlConnection("Data Source=DESKTOP-4DTNI3N;Initial Catalog=master;Integrated Security=true;"))
+            using (SqlConnection connection = new SqlConnection("server=Erde2008;database=Krebs_DB015;User id=Krebs015;Password=pKrebs015"))
+            {
+                connection.Open();
+                string query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='History' AND xtype='U') CREATE TABLE History (id Integer IDENTITY(1,1) PRIMARY KEY, questionaire_id Integer, questionaire_name VARCHAR(30), success BIT)";
+                SqlCommand command;
+                using(command = new SqlCommand(query, connection));
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        private List<string> GetHistoryString()
+        {
+            List<string> output = new List<string>();
+            using (SqlConnection connection = new SqlConnection("server=Erde2008;database=Krebs_DB015;User id=Krebs015;Password=pKrebs015"))
+            {
+                string query = "SELECT questionaire_id, questionaire_name, success FROM History";
+                SqlCommand command;
+                using (command = new SqlCommand(query, connection)) ;
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
+                        string name = reader.GetString(1);
+                        string success = reader.GetBoolean(2) == true ? "Bestanden" : "Nicht bestanden";
+                        output.Add(name + " (Fragebogen " + id + ")" + " - " + success);
+                    }
+                }
+                connection.Close();
+            }
+            return output;
+        }
+
+        private void SaveResultInHistory()
+        {
+            int success = Evaluate() > this.configuration.SuccessHurdle ? 1 : 0;
+            using (SqlConnection connection = new SqlConnection("server=Erde2008;database=Krebs_DB015;User id=Krebs015;Password=pKrebs015"))
+            {
+                connection.Open();
+                string query = "INSERT INTO HISTORY (questionaire_id, questionaire_name, success) VALUES ('"+this.questionaire.GetID()+"','"+this.configuration.NameOfProgram+"','"+success+"')";
+                SqlCommand command;
+                using(command = new SqlCommand(query, connection));
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        private void DeleteHistory()
+        {
+            using (SqlConnection connection = new SqlConnection("server=Erde2008;database=Krebs_DB015;User id=Krebs015;Password=pKrebs015"))
+            {
+                connection.Open();
+                string query = "TRUNCATE TABLE History";
+                SqlCommand command;
+                using(command = new SqlCommand(query, connection));
+                command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 	}
