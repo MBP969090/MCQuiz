@@ -63,5 +63,15 @@ namespace ConsoleApplication6
         {
             return this.nameLabel;
         }
+
+        public ListView GetListViewHistory()
+        {
+            return this.listView1;
+        }
+
+        public ListBox GetListBoxQuestionaire()
+        {
+            return this.listBox1;
+        }
     }
 }

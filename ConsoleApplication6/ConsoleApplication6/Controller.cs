@@ -32,6 +32,7 @@ namespace ConsoleApplication6
             this.eval_form = new EvaluationForm(this);
             this.start_form = new StartForm(this);
             this.start_form.GetNameLabel().Text = this.configuration.NameOfProgram;
+            SetHistoryListView();
             this.start_form.ShowDialog();
 		}
 
@@ -210,6 +211,17 @@ namespace ConsoleApplication6
             config_form.ShowDialog();
         }
 
+        private void SetHistoryListView()
+        {
+            List<string> history = GetHistoryString();
+            ListView history_listview = this.start_form.GetListViewHistory();
+            history_listview.Items.Clear();
+            foreach (var item in history)
+            {
+                history_listview.Items.Add(item);
+            }
+        }
+
         //Configurationform functions
 
 		/// <summary>
@@ -228,6 +240,7 @@ namespace ConsoleApplication6
 			this.configuration.SuccessHurdle = successHurdle;
 
             this.start_form.GetNameLabel().Text = name;
+            SetHistoryListView();
             start_form.Show();
         }
 
@@ -245,6 +258,7 @@ namespace ConsoleApplication6
 		/// </summary>
         public void BackToMainMenuButtonClicked()
         {
+            SetHistoryListView();
             eval_form.Hide();
             start_form.Show();
         }
