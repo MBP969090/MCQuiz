@@ -195,7 +195,7 @@ namespace ConsoleApplication6
 		/// </summary>
         public void StartButtonClicked()
         {
-            this.InitDemoQuestionaire();
+            this.InitQuestionaire(1);
             this.ques_form = new QuestionForm(this);
             start_form.Hide();
             ques_form.ShowDialog();
@@ -343,20 +343,9 @@ namespace ConsoleApplication6
 			{
 				radios[i].Text = q.GetAnswer(i).GetText();
 			}
-			string question_text = q.GetText();
-
-			Match regex = Regex.Match(question_text, "(.*){Binnen(.*)}");
-			if(regex.Value != "")
-			{
-				textbox.Text = regex.Groups[1].Value;
-				pictureBox.ImageLocation = "../../Binnen/"+regex.Groups[2].Value;
-				pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-			}
-			else
-			{
-				textbox.Text = question_text;
-				pictureBox.ImageLocation = "";
-			}
+			textbox.Text = q.GetText();
+			pictureBox.ImageLocation = q.GetPictureLocation();
+			pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
 		}
 
 		/// <summary>

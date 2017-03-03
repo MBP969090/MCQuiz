@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace ConsoleApplication6
 {
@@ -12,6 +13,7 @@ namespace ConsoleApplication6
 		private string text;
 		private List<Answer> answers;
 		private int id;
+		private string picture_location;
 
 		/// <summary>
 		/// Constructor for Question
@@ -21,7 +23,17 @@ namespace ConsoleApplication6
 		/// <param name="answers"></param>
 		public Question(int id, string text, List<Answer> answers)
 		{
-			this.text = text;
+			Match regex = Regex.Match(text, "(.*){Binnen(.*)}");
+			if (regex.Value != "")
+			{
+				this.text = regex.Groups[1].Value;
+				this.picture_location = "../../Binnen/" + regex.Groups[2].Value;
+			}
+			else
+			{
+				this.text = text;
+				this.picture_location = "";
+			}
 			this.answers = answers;
 			this.id = id;
 		}
@@ -113,6 +125,15 @@ namespace ConsoleApplication6
 		public string GetText()
 		{
 			return this.text;
+		}
+
+		/// <summary>
+		/// return link of picture
+		/// </summary>
+		/// <returns></returns>
+		public string GetPictureLocation()
+		{
+			return this.picture_location;
 		}
 
 		/// <summary>
