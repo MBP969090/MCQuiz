@@ -56,7 +56,7 @@ namespace ConsoleApplication6
 
         private void button1_Click(object sender, EventArgs e)
         {
-           controller.StartButtonClicked();
+           controller.StartButtonClicked(this.listBox1);
         }
 
         public Label GetNameLabel()

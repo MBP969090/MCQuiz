@@ -15,11 +15,11 @@ namespace ConsoleApplication6
 	public class Controller
 	{
 		private Questionaire questionaire;
-        private ConfigurationForm config_form;
-        private QuestionForm ques_form;
-        private EvaluationForm eval_form;
-        private StartForm start_form;
-        private Configuration configuration;
+		private ConfigurationForm config_form;
+		private QuestionForm ques_form;
+		private EvaluationForm eval_form;
+		private StartForm start_form;
+		private Configuration configuration;
 
 		//private string sqlString = "server=Erde2008;database=Krebs_DB015;User id=Krebs015;Password=pKrebs015";
 		private string sqlString = "Data Source=DESKTOP-4DTNI3N;Initial Catalog=master;Integrated Security=true;";
@@ -30,14 +30,18 @@ namespace ConsoleApplication6
 		/// </summary>
 		public Controller()
 		{
-            this.CreateHistoryTable();
-            this.configuration = new Configuration();
-            this.config_form = new ConfigurationForm(this);
-            this.eval_form = new EvaluationForm(this);
-            this.start_form = new StartForm(this);
-            this.start_form.GetNameLabel().Text = this.configuration.NameOfProgram;
-            SetHistoryListView();
-            this.start_form.ShowDialog();
+			this.CreateHistoryTable();
+			this.configuration = new Configuration();
+			this.config_form = new ConfigurationForm(this);
+			this.eval_form = new EvaluationForm(this);
+			this.start_form = new StartForm(this);
+			this.start_form.GetNameLabel().Text = this.configuration.NameOfProgram;
+
+			string[] myList = GetDictionaryIds().ToArray();
+			this.start_form.GetListBoxQuestionaire().Items.AddRange(myList);
+
+			SetHistoryListView();
+			this.start_form.ShowDialog();
 		}
 
 		/// <summary>
@@ -136,11 +140,11 @@ namespace ConsoleApplication6
 
 			for (int i = 0; i < questions.Length; i++)
 			{
-				this.questionaire.AddQuestion(i+1, questions[i], answers[i]);
+				this.questionaire.AddQuestion(i + 1, questions[i], answers[i]);
 			}
 			return true;
 		}
-		
+
 		/// <summary>
 		/// Execute GetNextQuestion from questionaire
 		/// </summary>
@@ -154,10 +158,10 @@ namespace ConsoleApplication6
 		/// Execute GetPreviousQuestion from questionaire
 		/// </summary>
 		/// <returns>question</returns>
-        public Question GetPreviousQuestion()
-        {
-            return this.questionaire.GetPreviousQuestion();
-        }
+		public Question GetPreviousQuestion()
+		{
+			return this.questionaire.GetPreviousQuestion();
+		}
 
 		/// <summary>
 		/// Execute GetFirstQuestion from questionaire
@@ -172,10 +176,10 @@ namespace ConsoleApplication6
 		/// Execute GetCurrentQuestion from questionaire
 		/// </summary>
 		/// <returns>question</returns>
-        public Question GetCurrentQuestion()
-        {
-            return this.questionaire.GetCurrentQuestion();
-        }
+		public Question GetCurrentQuestion()
+		{
+			return this.questionaire.GetCurrentQuestion();
+		}
 
 		/// <summary>
 		/// Execute Evaluate funktion form questionaire
@@ -186,20 +190,21 @@ namespace ConsoleApplication6
 			return this.questionaire.Evaluate();
 		}
 
-        //Startform functions
+		//Startform functions
 
 		/// <summary>
 		/// Action if StartButton in startform is clicked
 		/// hide start_form
 		/// init questionform
 		/// </summary>
-        public void StartButtonClicked()
-        {
-            this.InitQuestionaire(1);
-            this.ques_form = new QuestionForm(this);
-            start_form.Hide();
-            ques_form.ShowDialog();
-        }
+		public void StartButtonClicked(ListBox listbox)
+		{
+			int select = Convert.ToInt32(listbox.SelectedItem);
+			this.InitQuestionaire(select);
+			this.ques_form = new QuestionForm(this);
+			start_form.Hide();
+			ques_form.ShowDialog();
+		}
 
 		/// <summary>
 		/// Action if ConfigButton in startform is clicked
@@ -207,26 +212,26 @@ namespace ConsoleApplication6
 		/// set labels in configurationform
 		/// init configurationform
 		/// </summary>
-        public void ConfigButtonClicked()
-        {
-            start_form.Hide();
-            config_form.GetSuccessHurdleTextbox().Text = ""+this.configuration.SuccessHurdle;
-            config_form.GetNameOfProgramTextbox().Text = this.configuration.NameOfProgram;
-            config_form.ShowDialog();
-        }
+		public void ConfigButtonClicked()
+		{
+			start_form.Hide();
+			config_form.GetSuccessHurdleTextbox().Text = "" + this.configuration.SuccessHurdle;
+			config_form.GetNameOfProgramTextbox().Text = this.configuration.NameOfProgram;
+			config_form.ShowDialog();
+		}
 
-        private void SetHistoryListView()
-        {
-            List<string> history = GetHistoryString();
-            ListView history_listview = this.start_form.GetListViewHistory();
-            history_listview.Items.Clear();
-            foreach (var item in history)
-            {
-                history_listview.Items.Add(item);
-            }
-        }
+		private void SetHistoryListView()
+		{
+			List<string> history = GetHistoryString();
+			ListView history_listview = this.start_form.GetListViewHistory();
+			history_listview.Items.Clear();
+			foreach (var item in history)
+			{
+				history_listview.Items.Add(item);
+			}
+		}
 
-        //Configurationform functions
+		//Configurationform functions
 
 		/// <summary>
 		/// Action if SaveButton in configurationform is clicked
@@ -234,82 +239,82 @@ namespace ConsoleApplication6
 		/// sets configuration object to entered data
 		/// sets label in start_form
 		/// </summary>
-        public void SaveButtonClicked()
-        {
-            config_form.Hide();
+		public void SaveButtonClicked()
+		{
+			config_form.Hide();
 			string name = config_form.GetNameOfProgramTextbox().Text;
 			int successHurdle = Convert.ToInt32(config_form.GetSuccessHurdleTextbox().Text);
 
 			this.configuration.NameOfProgram = name;
 			this.configuration.SuccessHurdle = successHurdle;
 
-            this.start_form.GetNameLabel().Text = name;
-            SetHistoryListView();
-            start_form.Show();
-        }
+			this.start_form.GetNameLabel().Text = name;
+			SetHistoryListView();
+			start_form.Show();
+		}
 
-        public void ResetHistoryButtonClicked()
-        {
-            this.DeleteHistory();
-        }
+		public void ResetHistoryButtonClicked()
+		{
+			this.DeleteHistory();
+		}
 
-        //Evaluationform functions
+		//Evaluationform functions
 
 		/// <summary>
 		/// Action if BackToMenuButton in evaluationform is clicked
 		/// hide evaluationform
 		/// show start_form
 		/// </summary>
-        public void BackToMainMenuButtonClicked()
-        {
-            SetHistoryListView();
-            eval_form.Hide();
-            start_form.Show();
-        }
+		public void BackToMainMenuButtonClicked()
+		{
+			SetHistoryListView();
+			eval_form.Hide();
+			start_form.Show();
+		}
 
-        //Questionform functions
+		//Questionform functions
 
 		/// <summary>
 		/// initialise textboxes and radiobuttons for first question
 		/// </summary>
-        public void InitializeQuestionForm(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
-        {
+		public void InitializeQuestionForm(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
+		{
 			this.UpdateQuestionPage(GetFirstQuestion(), textbox, radios, pictureBox);
-        }
+		}
 
 		/// <summary>
 		/// initialise textboxes and radiobuttons for next question
 		/// set choice for current question
 		/// </summary>
-        public void ForwardButtonClicked(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
-        {
-            SetSelectedAnswer(radios);
-            CreateNextPageQuestionForm(textbox, radios, pictureBox);
-        }
+		public void ForwardButtonClicked(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
+		{
+			SetSelectedAnswer(radios);
+			CreateNextPageQuestionForm(textbox, radios, pictureBox);
+		}
 
 		/// <summary>
 		/// initialise textboxes and radiobuttons for next question
 		/// set choice for current question
 		/// </summary>
-        public void BackButtonClicked(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
-        {
-            SetSelectedAnswer(radios);
-            CreatePreviousPageQuestionForm(textbox, radios, pictureBox);
-        }
+		public void BackButtonClicked(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
+		{
+			SetSelectedAnswer(radios);
+			CreatePreviousPageQuestionForm(textbox, radios, pictureBox);
+		}
 
 		/// <summary>
 		/// set choosen answer of current question
 		/// </summary>
 		/// <param name="radios"></param>
-        private void SetSelectedAnswer(RadioButton[] radios)
-        {
-            for (int i = 0; i < radios.Length; i++)
-            {
-                if(radios[i].Checked){
-                    this.GetCurrentQuestion().AnswerQuestion(i);
-                }
-            }
-        }
+		private void SetSelectedAnswer(RadioButton[] radios)
+		{
+			for (int i = 0; i < radios.Length; i++)
+			{
+				if (radios[i].Checked) {
+					this.GetCurrentQuestion().AnswerQuestion(i);
+				}
+			}
+		}
 
 		/// <summary>
 		/// initialise questionform for next question if exists
@@ -317,24 +322,23 @@ namespace ConsoleApplication6
 		/// </summary>
 		/// <param name="textbox"></param>
 		/// <param name="radios"></param>
-        private void CreateNextPageQuestionForm(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
-        {
-            Question q;
-            if ((q = GetNextQuestion()) == null)
-            {
-                this.SaveResultInHistory();
-                this.ques_form.Hide();
+		private void CreateNextPageQuestionForm(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
+		{
+			Question q;
+			if ((q = GetNextQuestion()) == null)
+			{
+				this.SaveResultInHistory();
+				this.ques_form.Hide();
 				this.eval_form.SetSuccessLabel(configuration.SuccessHurdle <= this.Evaluate());
 				this.eval_form.SetResultLabel(this.questionaire.GetEvaluateString());
 				this.eval_form.SetWrongAnswerTextbox(this.questionaire.GetWrongAnswerString());
-                this.eval_form.ShowDialog();
-
-            }
-            else
-            {
+				this.eval_form.ShowDialog();
+			}
+			else
+			{
 				this.UpdateQuestionPage(q, textbox, radios, pictureBox);
-            }
-        }
+			}
+		}
 
 		private void UpdateQuestionPage(Question q, TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
 		{
@@ -353,94 +357,114 @@ namespace ConsoleApplication6
 		/// </summary>
 		/// <param name="textbox"></param>
 		/// <param name="radios"></param>
-        private void CreatePreviousPageQuestionForm(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
-        {
-            Question q;
-            if ((q = GetPreviousQuestion()) != null)
-            {
+		private void CreatePreviousPageQuestionForm(TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
+		{
+			Question q;
+			if ((q = GetPreviousQuestion()) != null)
+			{
 				this.UpdateQuestionPage(q, textbox, radios, pictureBox);
-            }
-        }
+			}
+		}
 
 		/// <summary>
 		/// set radiobuttons like the answers of given question
 		/// </summary>
 		/// <param name="radios"></param>
 		/// <param name="q"></param>
-        private void SetRadios(RadioButton[] radios, Question q)
-        {
-            for (int i = 0; i < radios.Length; i++)
-            {
-                if(q.GetAnswer(i).IsChoosen()){
-                    radios[i].Checked = true;
-                } else{
-                    radios[i].Checked = false;
-                }
-            }
-        }
+		private void SetRadios(RadioButton[] radios, Question q)
+		{
+			for (int i = 0; i < radios.Length; i++)
+			{
+				if (q.GetAnswer(i).IsChoosen()) {
+					radios[i].Checked = true;
+				} else {
+					radios[i].Checked = false;
+				}
+			}
+		}
 
-        private void CreateHistoryTable()
-        {
-            using (SqlConnection connection = new SqlConnection(sqlString))
-            {
-                connection.Open();
-                string query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='History' AND xtype='U') CREATE TABLE History (id Integer IDENTITY(1,1) PRIMARY KEY, questionaire_id Integer, questionaire_name VARCHAR(30), success BIT)";
-                SqlCommand command;
-                using(command = new SqlCommand(query, connection));
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
+		private void CreateHistoryTable()
+		{
+			using (SqlConnection connection = new SqlConnection(sqlString))
+			{
+				connection.Open();
+				string query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='History' AND xtype='U') CREATE TABLE History (id Integer IDENTITY(1,1) PRIMARY KEY, questionaire_id Integer, questionaire_name VARCHAR(30), success BIT)";
+				SqlCommand command;
+				using (command = new SqlCommand(query, connection)) ;
+				command.ExecuteNonQuery();
+				connection.Close();
+			}
+		}
 
-        private List<string> GetHistoryString()
-        {
-            List<string> output = new List<string>();
-            using (SqlConnection connection = new SqlConnection(sqlString))
-            {
-                string query = "SELECT questionaire_id, questionaire_name, success FROM History";
-                SqlCommand command;
-                using (command = new SqlCommand(query, connection)) ;
-                connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        int id = reader.GetInt32(0);
-                        string name = reader.GetString(1);
-                        string success = reader.GetBoolean(2) == true ? "Bestanden" : "Nicht bestanden";
-                        output.Add(name + " (Fragebogen " + id + ")" + " - " + success);
-                    }
-                }
-                connection.Close();
-            }
-            return output;
-        }
+		private List<string> GetHistoryString()
+		{
+			List<string> output = new List<string>();
+			using (SqlConnection connection = new SqlConnection(sqlString))
+			{
+				string query = "SELECT questionaire_id, questionaire_name, success FROM History";
+				SqlCommand command;
+				using (command = new SqlCommand(query, connection)) ;
+				connection.Open();
+				using (SqlDataReader reader = command.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						int id = reader.GetInt32(0);
+						string name = reader.GetString(1);
+						string success = reader.GetBoolean(2) == true ? "Bestanden" : "Nicht bestanden";
+						output.Add(name + " (Fragebogen " + id + ")" + " - " + success);
+					}
+				}
+				connection.Close();
+			}
+			return output;
+		}
 
-        private void SaveResultInHistory()
-        {
-            int success = Evaluate() > this.configuration.SuccessHurdle ? 1 : 0;
-            using (SqlConnection connection = new SqlConnection(sqlString))
-            {
-                connection.Open();
-                string query = "INSERT INTO HISTORY (questionaire_id, questionaire_name, success) VALUES ('"+this.questionaire.GetID()+"','"+this.configuration.NameOfProgram+"','"+success+"')";
-                SqlCommand command;
-                using(command = new SqlCommand(query, connection));
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
+		private void SaveResultInHistory()
+		{
+			int success = Evaluate() > this.configuration.SuccessHurdle ? 1 : 0;
+			using (SqlConnection connection = new SqlConnection(sqlString))
+			{
+				connection.Open();
+				string query = "INSERT INTO HISTORY (questionaire_id, questionaire_name, success) VALUES ('" + this.questionaire.GetID() + "','" + this.configuration.NameOfProgram + "','" + success + "')";
+				SqlCommand command;
+				using (command = new SqlCommand(query, connection)) ;
+				command.ExecuteNonQuery();
+				connection.Close();
+			}
+		}
 
-        private void DeleteHistory()
-        {
-            using (SqlConnection connection = new SqlConnection(sqlString))
-            {
-                connection.Open();
-                string query = "TRUNCATE TABLE History";
-                SqlCommand command;
-                using(command = new SqlCommand(query, connection));
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
+		private void DeleteHistory()
+		{
+			using (SqlConnection connection = new SqlConnection(sqlString))
+			{
+				connection.Open();
+				string query = "TRUNCATE TABLE History";
+				SqlCommand command;
+				using (command = new SqlCommand(query, connection)) ;
+				command.ExecuteNonQuery();
+				connection.Close();
+			}
+		}
+
+		private List<string> GetDictionaryIds()
+		{
+			List<string> dictionaryIds = new List<string>();
+			using (SqlConnection connection = new SqlConnection(sqlString))
+			{
+				string query = "SELECT DISTINCT(FragebogenNr) FROM T_Fragebogen_unter_Maschine";
+				SqlCommand command = new SqlCommand(query, connection);
+				connection.Open();
+				using (SqlDataReader reader = command.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						dictionaryIds.Add(""+reader.GetInt32(0));
+					}
+				}
+				connection.Close();
+			}
+			return dictionaryIds;
+		}
 	}
 }
