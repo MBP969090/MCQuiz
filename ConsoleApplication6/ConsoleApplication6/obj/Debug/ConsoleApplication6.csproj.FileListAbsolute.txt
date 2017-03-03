@@ -43,3 +43,15 @@ C:\MCQuiz\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.
 C:\MCQuiz\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.StartForm.resources
 C:\MCQuiz\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.QuestionForm.resources
 C:\MCQuiz\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.csproj.GenerateResource.Cache
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\bin\Debug\ConsoleApplication6.exe.config
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.exe
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.pdb
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\bin\Debug\ConsoleApplication6.exe
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\bin\Debug\ConsoleApplication6.pdb
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.csprojResolveAssemblyReference.cache
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.ConfigurationForm.resources
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.EvaluationForm.resources
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.StartForm.resources
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.QuestionForm.resources
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.csproj.GenerateResource.Cache
+C:\Users\Peter\Source\Repos\MCQuiz3\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.Properties.Resources.resources

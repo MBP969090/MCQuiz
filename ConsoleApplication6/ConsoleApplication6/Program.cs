@@ -12,8 +12,8 @@ namespace ConsoleApplication6
 		static void Main(string[] args)
 		{
             Controller c = new Controller();
-			/*c.InitDemoQuestionaire();
-            
+			//c.InitDemoQuestionaire();
+            /*
 			if (c.InitDemoQuestionaire())
 			{
 				Question q = c.GetFirstQuestion();

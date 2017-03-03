@@ -28,13 +28,16 @@ namespace ConsoleApplication6
 		/// <param name="id"></param>
 		/// <param name="text"></param>
 		/// <param name="answers"></param>
-		public void AddQuestion(int id, string text, Dictionary<string, bool> answers)
+		public void AddQuestion(int id, string text, List<Dictionary<string, bool>> answers)
 		{
 			List<Answer> answer_list = new List<Answer>();
 			foreach (var item in answers)
 			{
-				Answer answer = new Answer(item.Key, item.Value);
-				answer_list.Add(answer);
+				foreach (var item_part in item)
+				{
+					Answer answer = new Answer(item_part.Key, item_part.Value);
+					answer_list.Add(answer);
+				}
 			}
 			Question question = new Question(id, text, answer_list);
 			this.questions.Add(question);

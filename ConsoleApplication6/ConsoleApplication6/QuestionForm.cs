@@ -25,7 +25,7 @@ namespace ConsoleApplication6
             this.radios[1] = this.radioButton2;
             this.radios[2] = this.radioButton3;
             this.radios[3] = this.radioButton4;
-            controller.InitializeQuestionForm(this.textBox1, this.radios);
+            controller.InitializeQuestionForm(this.textBox1, this.radios, this.pictureBox1);
         }
 
         private void QuestionForm_Load(object sender, EventArgs e)
@@ -35,12 +35,12 @@ namespace ConsoleApplication6
 
         private void forward_button_Click(object sender, EventArgs e)
         {
-            controller.ForwardButtonClicked(this.textBox1, this.radios);
+            controller.ForwardButtonClicked(this.textBox1, this.radios, this.pictureBox1);
         }
 
         private void back_button_Click(object sender, EventArgs e)
         {
-            controller.BackButtonClicked(this.textBox1, this.radios);
+            controller.BackButtonClicked(this.textBox1, this.radios, this.pictureBox1);
         }
 
 		private void textBox1_TextChanged(object sender, EventArgs e)
