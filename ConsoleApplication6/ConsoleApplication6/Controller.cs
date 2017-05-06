@@ -78,49 +78,26 @@ namespace ConsoleApplication6
 						{
 							success = true;
 							List<Dictionary<string, bool>> answers = new List<Dictionary<string, bool>>();
+							int rightAnswer = 0;
 							for (int i = 3; i <= 6; i++)
 							{
 								if (type == "Binnen")
 								{
-									if (reader.GetByte(7) == i - 2)
-									{
-										answers.Add(new Dictionary<string, bool> { { reader.GetString(i), true } });
-									}
-									else
-									{
-										answers.Add(new Dictionary<string, bool> { { reader.GetString(i), false } });
-									}
+									rightAnswer = reader.GetByte(7);
 								}
 								else
 								{
 									string rightAnswerString = reader.GetString(7);
-									int rightAnswer = 0;
-									switch(rightAnswerString){
-										case "A":
-											rightAnswer = 1;
-											break;
-										case "B":
-											rightAnswer = 2;
-											break;
-										case "C":
-											rightAnswer = 3;
-											break;
-										case "D":
-											rightAnswer = 4;
-											break;
-										default:
-											break;
-									}
-									if (rightAnswer == i - 2)
-									{
-										answers.Add(new Dictionary<string, bool> { { reader.GetString(i), true } });
-									}
-									else
-									{
-										answers.Add(new Dictionary<string, bool> { { reader.GetString(i), false } });
-									}
+									rightAnswer = (int)rightAnswerString.First() - 64;
 								}
-
+								if (reader.GetByte(7) == i - 2)
+								{
+									answers.Add(new Dictionary<string, bool> { { reader.GetString(i), true } });
+								}
+								else
+								{
+									answers.Add(new Dictionary<string, bool> { { reader.GetString(i), false } });
+								}
 							}
 
 							this.questionnaire.AddQuestion(reader.GetInt32(1), reader.GetString(2), answers);
