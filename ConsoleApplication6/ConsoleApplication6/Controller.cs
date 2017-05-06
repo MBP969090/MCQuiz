@@ -10,11 +10,11 @@ using System.Windows.Forms;
 namespace ConsoleApplication6
 {
 	/// <summary>
-	/// This class is the main controller for Questionaire
+	/// This class is the main controller for Questionnaire
 	/// </summary>
 	public class Controller
 	{
-		private Questionaire questionaire;
+		private Questionnaire questionnaire;
 		private ConfigurationForm config_form;
 		private QuestionForm ques_form;
 		private EvaluationForm eval_form;
@@ -38,21 +38,21 @@ namespace ConsoleApplication6
 			this.start_form.GetNameLabel().Text = this.configuration.NameOfProgram;
 
 			string[] myList = GetDictionaryIds().ToArray();
-			this.start_form.GetListBoxQuestionaire().Items.AddRange(myList);
+			this.start_form.GetListBoxQuestionnaire().Items.AddRange(myList);
 
 			SetHistoryListView();
 			this.start_form.ShowDialog();
 		}
 
 		/// <summary>
-		/// Initialise questionaire with id out of database
+		/// Initialise questionnaire with id out of database
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>success</returns>
-		public bool InitQuestionaire(int id, string type)
+		public bool InitQuestionnaire(int id, string type)
 		{
 			bool success = false;
-			this.questionaire = new Questionaire(id);
+			this.questionnaire = new Questionnaire(id);
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
 				string query = "";
@@ -123,7 +123,7 @@ namespace ConsoleApplication6
 
 							}
 
-							this.questionaire.AddQuestion(reader.GetInt32(1), reader.GetString(2), answers);
+							this.questionnaire.AddQuestion(reader.GetInt32(1), reader.GetString(2), answers);
 						}
 					}
 				}
@@ -133,12 +133,12 @@ namespace ConsoleApplication6
 		}
 
 		/// <summary>
-		/// Create new questionaire with hard coded data
+		/// Create new questionnaire with hard coded data
 		/// </summary>
 		/// <returns></returns>
-		public bool InitDemoQuestionaire()
+		public bool InitDemoQuestionnaire()
 		{
-			this.questionaire = new Questionaire(1);
+			this.questionnaire = new Questionnaire(1);
 			string[] questions = new string[5];
 			questions[4] = "Was ist zu tun, wenn vor Antritt der Fahrt nicht feststeht, wer Fahrzeugführer ist?";
 			questions[1] = "In welchen Fällen darf weder ein Sportboot geführt noch dessen Kurs oder Geschwindigkeit selbstständig bestimmt werden?";
@@ -184,54 +184,54 @@ namespace ConsoleApplication6
 
 			for (int i = 0; i < questions.Length; i++)
 			{
-				this.questionaire.AddQuestion(i + 1, questions[i], answers[i]);
+				this.questionnaire.AddQuestion(i + 1, questions[i], answers[i]);
 			}
 			return true;
 		}
 
 		/// <summary>
-		/// Execute GetNextQuestion from questionaire
+		/// Execute GetNextQuestion from questionnaire
 		/// </summary>
 		/// <returns>question</returns>
 		public Question GetNextQuestion()
 		{
-			return this.questionaire.GetNextQuestion();
+			return this.questionnaire.GetNextQuestion();
 		}
 
 		/// <summary>
-		/// Execute GetPreviousQuestion from questionaire
+		/// Execute GetPreviousQuestion from questionnaire
 		/// </summary>
 		/// <returns>question</returns>
 		public Question GetPreviousQuestion()
 		{
-			return this.questionaire.GetPreviousQuestion();
+			return this.questionnaire.GetPreviousQuestion();
 		}
 
 		/// <summary>
-		/// Execute GetFirstQuestion from questionaire
+		/// Execute GetFirstQuestion from questionnaire
 		/// </summary>
 		/// <returns>question</returns>
 		public Question GetFirstQuestion()
 		{
-			return this.questionaire.GetFirstQuestion();
+			return this.questionnaire.GetFirstQuestion();
 		}
 
 		/// <summary>
-		/// Execute GetCurrentQuestion from questionaire
+		/// Execute GetCurrentQuestion from questionnaire
 		/// </summary>
 		/// <returns>question</returns>
 		public Question GetCurrentQuestion()
 		{
-			return this.questionaire.GetCurrentQuestion();
+			return this.questionnaire.GetCurrentQuestion();
 		}
 
 		/// <summary>
-		/// Execute Evaluate funktion form questionaire
+		/// Execute Evaluate funktion form questionnaire
 		/// </summary>
 		/// <returns></returns>
 		public double Evaluate()
 		{
-			return this.questionaire.Evaluate();
+			return this.questionnaire.Evaluate();
 		}
 
 		//Startform functions
@@ -246,7 +246,7 @@ namespace ConsoleApplication6
 			string select = Convert.ToString(listbox.SelectedItem);
 			int selectedId = Convert.ToInt32(Regex.Match(select, "(\\d+)\\s(\\w+)").Groups[1].Value);
 			string selectedQuestionnaire = Regex.Match(select, "(\\d+)\\s(\\w+)").Groups[2].Value;
-			this.InitQuestionaire(selectedId, selectedQuestionnaire);
+			this.InitQuestionnaire(selectedId, selectedQuestionnaire);
 			this.ques_form = new QuestionForm(this);
 			start_form.Hide();
 			ques_form.ShowDialog();
@@ -376,8 +376,8 @@ namespace ConsoleApplication6
 				this.SaveResultInHistory();
 				this.ques_form.Hide();
 				this.eval_form.SetSuccessLabel(configuration.SuccessHurdle <= this.Evaluate());
-				this.eval_form.SetResultLabel(this.questionaire.GetEvaluateString());
-				this.eval_form.SetWrongAnswerTextbox(this.questionaire.GetWrongAnswerString());
+				this.eval_form.SetResultLabel(this.questionnaire.GetEvaluateString());
+				this.eval_form.SetWrongAnswerTextbox(this.questionnaire.GetWrongAnswerString());
 				this.eval_form.ShowDialog();
 			}
 			else
@@ -434,7 +434,7 @@ namespace ConsoleApplication6
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
 				connection.Open();
-				string query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='History' AND xtype='U') CREATE TABLE History (id Integer IDENTITY(1,1) PRIMARY KEY, questionaire_id Integer, questionaire_name VARCHAR(30), success BIT)";
+				string query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='History' AND xtype='U') CREATE TABLE History (id Integer IDENTITY(1,1) PRIMARY KEY, questionnaire_id Integer, questionnaire_name VARCHAR(30), success BIT)";
 				SqlCommand command;
 				using (command = new SqlCommand(query, connection)) ;
 				command.ExecuteNonQuery();
@@ -444,10 +444,11 @@ namespace ConsoleApplication6
 
 		private List<string> GetHistoryString()
 		{
+			CreateHistoryTable();
 			List<string> output = new List<string>();
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
-				string query = "SELECT questionaire_id, questionaire_name, success FROM History";
+				string query = "SELECT questionnaire_id, questionnaire_name, success FROM History";
 				SqlCommand command;
 				using (command = new SqlCommand(query, connection)) ;
 				connection.Open();
@@ -472,7 +473,7 @@ namespace ConsoleApplication6
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
 				connection.Open();
-				string query = "INSERT INTO HISTORY (questionaire_id, questionaire_name, success) VALUES ('" + this.questionaire.GetID() + "','" + this.configuration.NameOfProgram + "','" + success + "')";
+				string query = "INSERT INTO HISTORY (questionnaire_id, questionnaire_name, success) VALUES ('" + this.questionnaire.GetID() + "','" + this.configuration.NameOfProgram + "','" + success + "')";
 				SqlCommand command;
 				using (command = new SqlCommand(query, connection)) ;
 				command.ExecuteNonQuery();

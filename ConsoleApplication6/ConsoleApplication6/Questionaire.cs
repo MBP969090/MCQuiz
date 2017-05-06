@@ -4,26 +4,26 @@ using System.Collections.Generic;
 namespace ConsoleApplication6
 {
 	/// <summary>
-	/// This Class represents a questionaire with multiple question objects
+	/// This Class represents a questionnaire with multiple question objects
 	/// </summary>
-	public class Questionaire
+	public class Questionnaire
 	{
 		private List<Question> questions = new List<Question>();
 		private int id;
 		private int question_pointer;
 
 		/// <summary>
-		/// Constructor for questionaire object
+		/// Constructor for questionnaire object
 		/// </summary>
 		/// <param name="id"></param>
-		public Questionaire(int id)
+		public Questionnaire(int id)
 		{
 			this.id = id;
 			this.question_pointer = 0;
 		}
 
 		/// <summary>
-		/// Adds a new question to questionaire
+		/// Adds a new question to questionnaire
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="text"></param>
@@ -95,7 +95,7 @@ namespace ConsoleApplication6
         }
 
 		/// <summary>
-		/// Get first question of this questionaire
+		/// Get first question of this questionnaire
 		/// sets pointer to zero
 		/// </summary>
 		/// <returns>question</returns>
@@ -106,7 +106,7 @@ namespace ConsoleApplication6
 		}
 
 		/// <summary>
-		/// Get next question in questionaire after current if exists
+		/// Get next question in questionnaire after current if exists
 		/// else return null
 		/// increment question_pointer
 		/// </summary>
@@ -120,7 +120,7 @@ namespace ConsoleApplication6
 		}
 
 		/// <summary>
-		/// Get previous question in questionaire before current if exists
+		/// Get previous question in questionnaire before current if exists
 		/// else return null
 		/// decrement question_pointer
 		/// </summary>
@@ -135,7 +135,7 @@ namespace ConsoleApplication6
 		}
 
 		/// <summary>
-		/// Get sum of all questions in this questionaire
+		/// Get sum of all questions in this questionnaire
 		/// </summary>
 		/// <returns>sum</returns>
 		private int QuestionCount()
@@ -162,7 +162,7 @@ namespace ConsoleApplication6
 		}
 
 		/// <summary>
-		/// Get sum of all correct answers in this questionaire
+		/// Get sum of all correct answers in this questionnaire
 		/// </summary>
 		/// <returns>sum</returns>
 		private int CountCorrectAnswers()
@@ -180,7 +180,7 @@ namespace ConsoleApplication6
 		}
 
 		/// <summary>
-		/// Get sum of all wrong answers in this questionaire
+		/// Get sum of all wrong answers in this questionnaire
 		/// </summary>
 		/// <returns>sum</returns>
 		private List<Question> GetWrongAnswers()

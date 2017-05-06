@@ -69,7 +69,7 @@ namespace ConsoleApplication6
             return this.listView1;
         }
 
-        public ListBox GetListBoxQuestionaire()
+        public ListBox GetListBoxQuestionnaire()
         {
             return this.listBox1;
         }
