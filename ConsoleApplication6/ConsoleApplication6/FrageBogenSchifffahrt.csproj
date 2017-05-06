@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Answer.cs" />
     <Compile Include="AnswerTest.cs" />
+    <Compile Include="QuestionnaireTest.cs" />
     <Compile Include="QuestionTest.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationForm.cs">
