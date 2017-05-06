@@ -43,5 +43,21 @@ namespace ConsoleApplication6
 			q.GetNextQuestion();
 			Assert.AreEqual("Warum nicht?", q.GetPreviousQuestion().GetText());
 		}
+
+		[Test]
+		public void ConstructorTest()
+		{
+			Questionnaire q = new Questionnaire(1);
+			List<Dictionary<String, bool>> answers = new List<Dictionary<string, bool>>(1);
+			Dictionary<string, bool> dict = new Dictionary<string, bool>();
+			dict.Add("1", true);
+			dict.Add("2", false);
+			dict.Add("3", false);
+			dict.Add("4", false);
+			answers.Add(dict);
+			q.AddQuestion(1, "Warum nur?", answers);
+			Assert.AreEqual("Warum nur?", q.GetFirstQuestion().GetText());
+			Assert.AreEqual("1", q.GetFirstQuestion().GetCorrectAnswer().GetText());
+		}
 	}
 }
