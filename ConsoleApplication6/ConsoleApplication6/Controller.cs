@@ -30,7 +30,7 @@ namespace ConsoleApplication6
 		/// </summary>
 		public Controller()
 		{
-			this.CreateHistoryTable();
+			//this.CreateHistoryTable();
 			this.configuration = new Configuration();
 			this.config_form = new ConfigurationForm(this);
 			this.eval_form = new EvaluationForm(this);
@@ -49,13 +49,25 @@ namespace ConsoleApplication6
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>success</returns>
-		public bool InitQuestionaire(int id)
+		public bool InitQuestionaire(int id, string type)
 		{
 			bool success = false;
 			this.questionaire = new Questionaire(id);
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
-				string query = "SELECT FragebogenNr, P_Id, Frage, Antwort1, Antwort2, Antwort3, Antwort4, RichtigeAntwort FROM T_Fragebogen_unter_Maschine LEFT JOIN T_SBF_Binnen ON (F_Id_SBF_Binnen=P_id) WHERE FragebogenNr=" + id;
+				string query = "";
+				if (type == "Binnen")
+				{
+					query = "SELECT FragebogenNr, P_Id, Frage, Antwort1, Antwort2, Antwort3, Antwort4, RichtigeAntwort FROM T_Fragebogen_unter_Maschine LEFT JOIN T_SBF_Binnen ON (F_Id_SBF_Binnen=P_id) WHERE FragebogenNr=" + id;
+				}
+				else if(type == "Funk")
+				{
+					query = "SELECT FragebogenNr, Id, Frage, AntwortA, AntwortB, AntwortC, AntwortD, RichtigeAntwort FROM T_Funk_UBI LEFT JOIN T_Fragebogen_Funk_UBI ON (F_id_Funk_UBI=Id) WHERE FragebogenNr=" + id;
+				}
+				else
+				{
+					return false;
+				}
 				SqlCommand command = new SqlCommand(query, connection);
 				connection.Open();
 				using (SqlDataReader reader = command.ExecuteReader())
@@ -68,13 +80,45 @@ namespace ConsoleApplication6
 							List<Dictionary<string, bool>> answers = new List<Dictionary<string, bool>>();
 							for (int i = 3; i <= 6; i++)
 							{
-								if (reader.GetByte(7) == i - 2)
+								if (type == "Binnen")
 								{
-									answers.Add(new Dictionary<string, bool> { { reader.GetString(i), true } });
+									if (reader.GetByte(7) == i - 2)
+									{
+										answers.Add(new Dictionary<string, bool> { { reader.GetString(i), true } });
+									}
+									else
+									{
+										answers.Add(new Dictionary<string, bool> { { reader.GetString(i), false } });
+									}
 								}
 								else
 								{
-									answers.Add(new Dictionary<string, bool> { { reader.GetString(i), false } });
+									string rightAnswerString = reader.GetString(7);
+									int rightAnswer = 0;
+									switch(rightAnswerString){
+										case "A":
+											rightAnswer = 1;
+											break;
+										case "B":
+											rightAnswer = 2;
+											break;
+										case "C":
+											rightAnswer = 3;
+											break;
+										case "D":
+											rightAnswer = 4;
+											break;
+										default:
+											break;
+									}
+									if (rightAnswer == i - 2)
+									{
+										answers.Add(new Dictionary<string, bool> { { reader.GetString(i), true } });
+									}
+									else
+									{
+										answers.Add(new Dictionary<string, bool> { { reader.GetString(i), false } });
+									}
 								}
 
 							}
@@ -199,8 +243,10 @@ namespace ConsoleApplication6
 		/// </summary>
 		public void StartButtonClicked(ListBox listbox)
 		{
-			int select = Convert.ToInt32(listbox.SelectedItem);
-			this.InitQuestionaire(select);
+			string select = Convert.ToString(listbox.SelectedItem);
+			int selectedId = Convert.ToInt32(Regex.Match(select, "(\\d+)\\s(\\w+)").Groups[1].Value);
+			string selectedQuestionnaire = Regex.Match(select, "(\\d+)\\s(\\w+)").Groups[2].Value;
+			this.InitQuestionaire(selectedId, selectedQuestionnaire);
 			this.ques_form = new QuestionForm(this);
 			start_form.Hide();
 			ques_form.ShowDialog();
@@ -452,14 +498,14 @@ namespace ConsoleApplication6
 			List<string> dictionaryIds = new List<string>();
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
-				string query = "SELECT DISTINCT(FragebogenNr) FROM T_Fragebogen_unter_Maschine";
+				string query = "(SELECT DISTINCT(CONCAT(FragebogenNr, ' ','Binnen')) FROM T_Fragebogen_unter_Maschine) UNION (SELECT DISTINCT(CONCAT(FragebogenNr, ' ', 'Funk')) FROM T_Fragebogen_Funk_UBI)";
 				SqlCommand command = new SqlCommand(query, connection);
 				connection.Open();
 				using (SqlDataReader reader = command.ExecuteReader())
 				{
 					while (reader.Read())
 					{
-						dictionaryIds.Add(""+reader.GetInt32(0));
+						dictionaryIds.Add(""+reader.GetString(0));
 					}
 				}
 				connection.Close();
