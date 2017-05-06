@@ -244,8 +244,9 @@ namespace ConsoleApplication6
 		public void StartButtonClicked(ListBox listbox)
 		{
 			string select = Convert.ToString(listbox.SelectedItem);
-			int selectedId = Convert.ToInt32(Regex.Match(select, "(\\d+)\\s(\\w+)").Groups[1].Value);
-			string selectedQuestionnaire = Regex.Match(select, "(\\d+)\\s(\\w+)").Groups[2].Value;
+			Match selected = Regex.Match(select, "(\\d+)\\s(\\w+)");
+			int selectedId = Convert.ToInt32(selected.Groups[1].Value);
+			string selectedQuestionnaire = selected.Groups[2].Value;
 			this.InitQuestionnaire(selectedId, selectedQuestionnaire);
 			this.ques_form = new QuestionForm(this);
 			start_form.Hide();
@@ -386,6 +387,13 @@ namespace ConsoleApplication6
 			}
 		}
 
+		/// <summary>
+		/// Update text and picture of questionpage
+		/// </summary>
+		/// <param name="q"></param>
+		/// <param name="textbox"></param>
+		/// <param name="radios"></param>
+		/// <param name="pictureBox"></param>
 		private void UpdateQuestionPage(Question q, TextBox textbox, RadioButton[] radios, PictureBox pictureBox)
 		{
 			SetRadios(radios, q);
@@ -428,7 +436,10 @@ namespace ConsoleApplication6
 				}
 			}
 		}
-
+		
+		/// <summary>
+		/// Creates new History Table if not exists
+		/// </summary>
 		private void CreateHistoryTable()
 		{
 			using (SqlConnection connection = new SqlConnection(sqlString))
@@ -442,6 +453,10 @@ namespace ConsoleApplication6
 			}
 		}
 
+		/// <summary>
+		/// Builds previous results from database
+		/// </summary>
+		/// <returns></returns>
 		private List<string> GetHistoryString()
 		{
 			CreateHistoryTable();
@@ -466,7 +481,9 @@ namespace ConsoleApplication6
 			}
 			return output;
 		}
-
+		/// <summary>
+		/// Saves result of completed questionnaire in database
+		/// </summary>
 		private void SaveResultInHistory()
 		{
 			int success = Evaluate() > this.configuration.SuccessHurdle ? 1 : 0;
@@ -481,6 +498,9 @@ namespace ConsoleApplication6
 			}
 		}
 
+		/// <summary>
+		/// Truncate history table
+		/// </summary>
 		private void DeleteHistory()
 		{
 			using (SqlConnection connection = new SqlConnection(sqlString))
@@ -494,6 +514,10 @@ namespace ConsoleApplication6
 			}
 		}
 
+		/// <summary>
+		/// Returns all ids from questionnaires
+		/// </summary>
+		/// <returns></returns>
 		private List<string> GetDictionaryIds()
 		{
 			List<string> dictionaryIds = new List<string>();
