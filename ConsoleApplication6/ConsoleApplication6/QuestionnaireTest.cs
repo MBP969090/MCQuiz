@@ -10,7 +10,7 @@ namespace ConsoleApplication6
 	[TestFixture]
 	class QuestionnaireTest
 	{
-		Questionnaire q = new Questionnaire(1);
+		Questionnaire q = new Questionnaire(1, "Binnen");
 
 		[SetUp]
 		public void SetupQuestionnaire()
@@ -47,7 +47,7 @@ namespace ConsoleApplication6
 		[Test]
 		public void ConstructorTest()
 		{
-			Questionnaire q = new Questionnaire(1);
+			Questionnaire q = new Questionnaire(1, "Binnen");
 			List<Dictionary<String, bool>> answers = new List<Dictionary<string, bool>>(1);
 			Dictionary<string, bool> dict = new Dictionary<string, bool>();
 			dict.Add("1", true);

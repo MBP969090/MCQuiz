@@ -11,15 +11,22 @@ namespace ConsoleApplication6
 		private List<Question> questions = new List<Question>();
 		private int id;
 		private int question_pointer;
+		private string type;
 
 		/// <summary>
 		/// Constructor for questionnaire object
 		/// </summary>
 		/// <param name="id"></param>
-		public Questionnaire(int id)
+		public Questionnaire(int id, string type)
 		{
 			this.id = id;
 			this.question_pointer = 0;
+			this.type = type;
+		}
+
+		public string GetQuestionnaireType()
+		{
+			return this.type;
 		}
 
 		/// <summary>

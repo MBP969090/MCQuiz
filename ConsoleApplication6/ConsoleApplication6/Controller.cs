@@ -52,7 +52,7 @@ namespace ConsoleApplication6
 		public bool InitQuestionnaire(int id, string type)
 		{
 			bool success = false;
-			this.questionnaire = new Questionnaire(id);
+			this.questionnaire = new Questionnaire(id, type);
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
 				string query = "";
@@ -90,7 +90,7 @@ namespace ConsoleApplication6
 									string rightAnswerString = reader.GetString(7);
 									rightAnswer = (int)rightAnswerString.First() - 64;
 								}
-								if (reader.GetByte(7) == i - 2)
+								if (rightAnswer == i - 2)
 								{
 									answers.Add(new Dictionary<string, bool> { { reader.GetString(i), true } });
 								}
@@ -115,7 +115,7 @@ namespace ConsoleApplication6
 		/// <returns></returns>
 		public bool InitDemoQuestionnaire()
 		{
-			this.questionnaire = new Questionnaire(1);
+			this.questionnaire = new Questionnaire(1, "Binnen");
 			string[] questions = new string[5];
 			questions[4] = "Was ist zu tun, wenn vor Antritt der Fahrt nicht feststeht, wer Fahrzeugführer ist?";
 			questions[1] = "In welchen Fällen darf weder ein Sportboot geführt noch dessen Kurs oder Geschwindigkeit selbstständig bestimmt werden?";
@@ -422,7 +422,7 @@ namespace ConsoleApplication6
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
 				connection.Open();
-				string query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='History' AND xtype='U') CREATE TABLE History (id Integer IDENTITY(1,1) PRIMARY KEY, questionnaire_id Integer, questionnaire_name VARCHAR(30), success BIT)";
+				string query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='History' AND xtype='U') CREATE TABLE History (id Integer IDENTITY(1,1) PRIMARY KEY, questionnaire_id VARCHAR(20), questionnaire_name VARCHAR(30), success BIT)";
 				SqlCommand command;
 				using (command = new SqlCommand(query, connection)) ;
 				command.ExecuteNonQuery();
@@ -448,7 +448,7 @@ namespace ConsoleApplication6
 				{
 					while (reader.Read())
 					{
-						int id = reader.GetInt32(0);
+						string id = reader.GetString(0);
 						string name = reader.GetString(1);
 						string success = reader.GetBoolean(2) == true ? "Bestanden" : "Nicht bestanden";
 						output.Add(name + " (Fragebogen " + id + ")" + " - " + success);
@@ -467,7 +467,7 @@ namespace ConsoleApplication6
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
 				connection.Open();
-				string query = "INSERT INTO HISTORY (questionnaire_id, questionnaire_name, success) VALUES ('" + this.questionnaire.GetID() + "','" + this.configuration.NameOfProgram + "','" + success + "')";
+				string query = "INSERT INTO HISTORY (questionnaire_id, questionnaire_name, success) VALUES ('" + this.questionnaire.GetID()+" "+this.questionnaire.GetQuestionnaireType() + "','" + this.configuration.NameOfProgram + "','" + success + "')";
 				SqlCommand command;
 				using (command = new SqlCommand(query, connection)) ;
 				command.ExecuteNonQuery();

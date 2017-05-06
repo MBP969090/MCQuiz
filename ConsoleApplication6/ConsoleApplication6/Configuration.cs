@@ -12,7 +12,7 @@ namespace ConsoleApplication6
         public Configuration()
         {
             this.SuccessHurdle = 90;
-            this.NameOfProgram = "Sportführerschein Binnen";
+            this.NameOfProgram = "Sportführerschein";
         }
 
         public Configuration(int successHurdle, string nameOfProgram)
