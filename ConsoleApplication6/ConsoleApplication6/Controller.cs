@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ConsoleApplication6
 {
-	/// <summary>
-	/// This class is the main controller for Questionnaire
-	/// </summary>
-	public class Controller
+    /// <summary>
+    /// This class is the main controller for Questionnaire
+    /// </summary>
+    public class Controller
 	{
 		private Questionnaire questionnaire;
 		private ConfigurationForm config_form;
@@ -22,7 +20,7 @@ namespace ConsoleApplication6
 		private Configuration configuration;
 
 		//private string sqlString = "server=Erde2008;database=Krebs_DB015;User id=Krebs015;Password=pKrebs015";
-		private string sqlString = "Data Source=DESKTOP-4DTNI3N;Initial Catalog=master;Integrated Security=true;";
+		private string sqlString = "Data Source=BENTHEPC;Initial Catalog=master;Integrated Security=true;";
 
 		/// <summary>
 		/// Constructor for Controller object
@@ -110,63 +108,6 @@ namespace ConsoleApplication6
 		}
 
 		/// <summary>
-		/// Create new questionnaire with hard coded data
-		/// </summary>
-		/// <returns></returns>
-		public bool InitDemoQuestionnaire()
-		{
-			this.questionnaire = new Questionnaire(1, "Binnen");
-			string[] questions = new string[5];
-			questions[4] = "Was ist zu tun, wenn vor Antritt der Fahrt nicht feststeht, wer Fahrzeugführer ist?";
-			questions[1] = "In welchen Fällen darf weder ein Sportboot geführt noch dessen Kurs oder Geschwindigkeit selbstständig bestimmt werden?";
-			questions[2] = "Wann ist ein Fahrzeug in Fahrt?";
-			questions[3] = "Wie lang ist die Dauer eines kurzen Tons(•) ?";
-			questions[0] = "Welche Bedeutung hat folgendes Tafelzeichen ?  {Binnen17.gif}";
-
-			List<List<Dictionary<string, bool>>> answers = new List<List<Dictionary<string, bool>>>();
-			answers.Add(new List<Dictionary<string, bool>>());
-			answers[0].Add(new Dictionary<string, bool>());
-			answers[0][0].Add("Begegnungsverbot.", false);
-			answers[0][0].Add("Begegnungsverbot für Fahrzeuge über 20 m Länge.", false);
-			answers[0][0].Add("Überholverbot für Fahrzeuge unter 20 m Länge.", false);
-			answers[0][0].Add("Überholverbot.", true);
-
-			answers.Add(new List<Dictionary<string, bool>>());
-			answers[1].Add(new Dictionary<string, bool>());
-			answers[1][0].Add("Wenn man infolge körperlicher oder geistiger Mängel oder infolge des Genusses alkoholischer Getränke oder anderer berauschender Mittel in der sicheren Führung behindert ist oder wenn eine Blutalkoholkonzentration von 0,3 ‰ oder mehr im Körper vorhanden ist.", false);
-			answers[1][0].Add("Wenn man infolge körperlicher oder geistiger Mängel oder infolge des Genusses alkoholischer Getränke oder anderer berauschender Mittel in der sicheren Führung behindert ist oder wenn eine Blutalkoholkonzentration von 0,5 ‰ oder mehr im Körper vorhanden ist.", true);
-			answers[1][0].Add("Wenn man infolge körperlicher oder geistiger Mängel oder infolge des Genusses alkoholischer Getränke oder anderer berauschender Mittel in der sicheren Führung behindert ist oder wenn eine Blutalkoholkonzentration von 0,8 ‰ oder mehr im Körper vorhanden ist.", false);
-			answers[1][0].Add("Wenn man infolge körperlicher oder geistiger Mängel oder infolge des Genusses alkoholischer Getränke oder anderer berauschender Mittel in der sicheren Führung behindert ist oder wenn eine Blutalkoholkonzentration von 1,0 ‰ oder mehr im Körper vorhanden ist.", false);
-
-			answers.Add(new List<Dictionary<string, bool>>());
-			answers[2].Add(new Dictionary<string, bool>());
-			answers[2][0].Add("Wenn es weder an Land festgemacht ist noch vor Anker liegt noch Fahrt durchs Wasser macht.", false);
-			answers[2][0].Add("Wenn es weder auf Grund sitzt noch vor Anker liegt noch manövrierbehindert oder manövrierunfähig ist.", false);
-			answers[2][0].Add("Wenn es weder vor Anker liegt noch an Land festgemacht ist noch auf Grund sitzt.", true);
-			answers[2][0].Add("Wenn es weder vor Anker liegt noch an Land festgemacht ist noch Fahrt über Grund macht.", false);
-
-			answers.Add(new List<Dictionary<string, bool>>());
-			answers[3].Add(new Dictionary<string, bool>());
-			answers[3][0].Add("Weniger als 1 Sekunde.", false);
-			answers[3][0].Add("Etwa 2 Sekunden.", false);
-			answers[3][0].Add("Etwa 1 Sekunde.", true);
-			answers[3][0].Add("Weniger als 4 Sekunden.", false);
-
-			answers.Add(new List<Dictionary<string, bool>>());
-			answers[4].Add(new Dictionary<string, bool>());
-			answers[4][0].Add("Der verantwortliche Fahrzeugführer muss bestimmt werden.", true);
-			answers[4][0].Add("Ein Inhaber des Sportbootführerscheins muss die Fahrzeugführung übernehmen.", false);
-			answers[4][0].Add("Der verantwortliche Fahrzeugführer muss gewählt werden.", false);
-			answers[4][0].Add("Ein Inhaber des Sportbootführerscheins übernimmt die Verantwortung.", false);
-
-			for (int i = 0; i < questions.Length; i++)
-			{
-				this.questionnaire.AddQuestion(i + 1, questions[i], answers[i]);
-			}
-			return true;
-		}
-
-		/// <summary>
 		/// Execute GetNextQuestion from questionnaire
 		/// </summary>
 		/// <returns>question</returns>
@@ -205,7 +146,7 @@ namespace ConsoleApplication6
 		/// <summary>
 		/// Execute Evaluate funktion form questionnaire
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>double</returns>
 		public double Evaluate()
 		{
 			return this.questionnaire.Evaluate();
@@ -500,7 +441,7 @@ namespace ConsoleApplication6
 			List<string> dictionaryIds = new List<string>();
 			using (SqlConnection connection = new SqlConnection(sqlString))
 			{
-				string query = "(SELECT DISTINCT(CONCAT(FragebogenNr, ' ','Binnen')) FROM T_Fragebogen_unter_Maschine) UNION (SELECT DISTINCT(CONCAT(FragebogenNr, ' ', 'Funk')) FROM T_Fragebogen_Funk_UBI)";
+				string query = "(SELECT DISTINCT(CONCAT(FragebogenNr, ' ','Binnen')) FROM T_Fragebogen_unter_Maschine) UNION (SELECT DISTINCT(CONCAT(FragebogenNr, ' ', 'Funk')) FROM  T_Fragebogen_Funk_UBI)";
 				SqlCommand command = new SqlCommand(query, connection);
 				connection.Open();
 				using (SqlDataReader reader = command.ExecuteReader())
